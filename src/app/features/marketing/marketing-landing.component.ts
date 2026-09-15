@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TranslatePipe } from '../../core/i18n/translate.pipe';
 
 /**
  * Pre-login campaign landing placeholder.
@@ -8,16 +9,17 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
  * actually server-renders/prerenders (see app.routes.server.ts). Everything behind `/app` is
  * CSR-only (the authenticated funnel) and must never be added here.
  *
- * This is a scaffold-only placeholder (AWEB-1) proving the SSR/CSR split boots end-to-end; the
- * real editorial marketing content is out of this ticket's scope.
+ * This is a scaffold-only placeholder (AWEB-1/AWEB-3) proving the SSR/CSR split and the i18n
+ * runtime boot end-to-end; the real editorial marketing content is out of this ticket's scope.
  */
 @Component({
   selector: 'app-marketing-landing',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslatePipe],
   template: `
     <main class="marketing-landing">
-      <h1>{{ appName }}</h1>
-      <p>Applicant admission portal — registration, application, exam, and results.</p>
+      <h1>{{ titleKey | translate }}</h1>
+      <p>{{ taglineKey | translate }}</p>
     </main>
   `,
   styles: `
@@ -30,5 +32,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   `,
 })
 export class MarketingLandingComponent {
-  protected readonly appName = 'ums-admission-web';
+  protected readonly titleKey = 'marketing.appName';
+  protected readonly taglineKey = 'marketing.tagline';
 }

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TranslatePipe } from '../core/i18n/translate.pipe';
 
 /**
  * Placeholder root of the authenticated, CSR-only funnel (`/app/**`).
@@ -13,10 +14,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 @Component({
   selector: 'app-authenticated-placeholder',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslatePipe],
   template: `<main>
-    <p>{{ message }}</p>
+    <p>{{ messageKey | translate }}</p>
   </main>`,
 })
 export class AuthenticatedPlaceholderComponent {
-  protected readonly message = 'Authenticated funnel (CSR) — scaffold placeholder.';
+  protected readonly messageKey = 'shell.authenticatedPlaceholder';
 }
