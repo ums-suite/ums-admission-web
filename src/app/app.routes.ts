@@ -54,8 +54,22 @@ export const routes: Routes = [
       },
       {
         path: 'result',
-        loadComponent: placeholder,
-        data: { label: 'Result check' },
+        children: [
+          {
+            path: 'check',
+            loadComponent: () =>
+              import('./features/result/result-check.component').then(
+                (m) => m.ResultCheckComponent,
+              ),
+          },
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/result/result-lookup.component').then(
+                (m) => m.ResultLookupComponent,
+              ),
+          },
+        ],
       },
       {
         path: '',

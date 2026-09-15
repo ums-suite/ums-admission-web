@@ -1,0 +1,28 @@
+<form class="result-lookup" (ngSubmit)="submit()">
+  <h1>{{ 'result.lookup.title' | translate }}</h1>
+  <p>{{ 'result.lookup.subtitle' | translate }}</p>
+
+  <ums-form-field
+    #applicationNumberField="umsFormField"
+    [label]="'result.lookup.applicationNumber.label' | translate"
+    [required]="true"
+    [errors]="
+      submitted() && !canSubmit() ? ['result.lookup.applicationNumber.required' | translate] : []
+    "
+  >
+    <ums-input
+      [id]="applicationNumberField.controlId()"
+      [ariaDescribedBy]="applicationNumberField.describedBy()"
+      [invalid]="applicationNumberField.hasErrors()"
+      [required]="true"
+      [value]="applicationNumber()"
+      (valueChange)="onApplicationNumberInput($event)"
+    />
+  </ums-form-field>
+
+  <p class="result-lookup__privacy-note">{{ 'result.lookup.privacyNote' | translate }}</p>
+
+  <ums-button type="submit" [disabled]="submitted() && !canSubmit()">
+    {{ 'result.lookup.submit' | translate }}
+  </ums-button>
+</form>

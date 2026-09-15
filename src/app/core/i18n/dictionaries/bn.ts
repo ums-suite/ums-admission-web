@@ -265,4 +265,46 @@ export const BN_TRANSLATIONS: TranslationDictionary = {
   'postResult.documents.status.Pending': 'পর্যালোচনাধীন',
   'postResult.documents.status.Approved': 'যাচাইকৃত',
   'postResult.documents.status.Rejected': 'মনোযোগ প্রয়োজন',
+
+  'result.lookup.title': 'আপনার ফলাফল পরীক্ষা করুন',
+  'result.lookup.subtitle': 'আপনার ভর্তির ফলাফল দেখতে আবেদন নম্বর লিখুন।',
+  'result.lookup.applicationNumber.label': 'আবেদন নম্বর',
+  'result.lookup.applicationNumber.required': 'অনুগ্রহ করে আপনার আবেদন নম্বর লিখুন।',
+  'result.lookup.privacyNote':
+    'শেয়ার করা বা পাবলিক ডিভাইসে, কাজ শেষে এই উইন্ডোটি বন্ধ করতে মনে রাখুন — আপনার আবেদন নম্বর জানা যে কেউ আপনার ফলাফল দেখতে পাবে।',
+  'result.lookup.submit': 'ফলাফল দেখুন',
+
+  'result.check.checking.title': 'আপনার ফলাফল পরীক্ষা করা হচ্ছে…',
+  'result.check.checking.body': 'এটি একটু সময় নিতে পারে।',
+  'result.check.queued.title': 'আপনি সারিতে আছেন',
+  'result.check.queued.body':
+    'অনেকেই এখন তাদের ফলাফল দেখছেন, তাই আমরা পালাক্রমে সবকিছু ঠিকভাবে চালাচ্ছি। আপনার পালা এলে স্বয়ংক্রিয়ভাবে ফলাফল দেখানো হবে — রিফ্রেশ করার প্রয়োজন নেই।',
+  'result.check.queued.position': 'সারিতে আপনার অবস্থান: {{position}}',
+  'result.check.queued.estimatedWait': 'আনুমানিক অপেক্ষার সময়: প্রায় {{seconds}} সেকেন্ড',
+  'result.check.followerNotice': 'আপনি ইতিমধ্যে এই ডিভাইসের অন্য একটি ট্যাবে পরীক্ষা করছেন।',
+  'result.check.notPublished.title': 'এখনও প্রকাশিত হয়নি',
+  'result.check.notPublished.body': 'আপনার ফলাফল এখনও প্রকাশিত হয়নি। পরে আবার দেখুন।',
+  'result.check.checkAgain': 'আবার দেখুন',
+  'result.check.error.title': 'কিছু একটা ভুল হয়েছে',
+  'result.check.error.body':
+    'এই মুহূর্তে আপনার ফলাফল পরীক্ষা করা যায়নি। কিছুক্ষণ পর আবার চেষ্টা করুন।',
+  'result.check.error.action': 'ফলাফল পরীক্ষায় ফিরে যান',
+
+  'result.reveal.admitted.title': 'অভিনন্দন!',
+  'result.reveal.admitted.body': 'আপনি ভর্তির জন্য নির্বাচিত হয়েছেন।',
+  'result.reveal.admitted.nextSteps':
+    'এরপর, নির্ধারিত সময়সীমার মধ্যে আপনার আসন নিশ্চিত করুন এবং ভর্তি ফি পরিশোধ করুন।',
+  'result.reveal.admitted.action': 'আসন নিশ্চিতকরণে এগিয়ে যান',
+  'result.reveal.meritRank': 'আপনার মেধাক্রম: {{rank}}',
+  'result.reveal.waitlisted.title': 'আপনি অপেক্ষমাণ তালিকায় আছেন',
+  'result.reveal.waitlisted.body':
+    'আপনি এখনও ভর্তির জন্য নির্বাচিত হননি, তবে আপনার জমাকৃত পছন্দক্রম ও মেধাক্রমের ভিত্তিতে আপনি আপনার আবেদনকৃত প্রোগ্রামের অপেক্ষমাণ তালিকায় আছেন।',
+  'result.reveal.waitlisted.nextSteps':
+    'আসন খালি হলে আমরা আপনাকে জানাব। এখন আপনার কিছু করার প্রয়োজন নেই।',
+  'result.reveal.waitlistRank': 'অপেক্ষমাণ তালিকায় আপনার অবস্থান: {{rank}}',
+  'result.reveal.notAdmitted.title': 'আপনার ফলাফল প্রস্তুত',
+  'result.reveal.notAdmitted.body':
+    'আপনার জমাকৃত পছন্দক্রম ও মেধাক্রমের ভিত্তিতে এবার আপনি ভর্তির জন্য নির্বাচিত হননি।',
+  'result.reveal.notAdmitted.nextSteps':
+    'আবেদনের জন্য ধন্যবাদ। ভবিষ্যতের ভর্তি চক্র সম্পর্কে তথ্যের জন্য নজর রাখুন।',
 };

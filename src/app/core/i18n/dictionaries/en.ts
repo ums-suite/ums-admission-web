@@ -266,4 +266,47 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
   'postResult.documents.status.Pending': 'Under review',
   'postResult.documents.status.Approved': 'Verified',
   'postResult.documents.status.Rejected': 'Needs attention',
+
+  'result.lookup.title': 'Check your result',
+  'result.lookup.subtitle': 'Enter your application number to check your admission result.',
+  'result.lookup.applicationNumber.label': 'Application number',
+  'result.lookup.applicationNumber.required': 'Please enter your application number.',
+  'result.lookup.privacyNote':
+    "On a shared or public device, remember to close this window once you're done -- your result stays visible to anyone who knows your application number.",
+  'result.lookup.submit': 'Check result',
+
+  'result.check.checking.title': 'Checking your result…',
+  'result.check.checking.body': 'This will only take a moment.',
+  'result.check.queued.title': "You're in line",
+  'result.check.queued.body':
+    "A lot of people are checking their results right now, so we're taking turns to keep things running smoothly. You'll be taken to your result automatically -- no need to refresh.",
+  'result.check.queued.position': 'Your position in line: {{position}}',
+  'result.check.queued.estimatedWait': 'Estimated wait: about {{seconds}} seconds',
+  'result.check.followerNotice': "You're already checking in another tab on this device.",
+  'result.check.notPublished.title': 'Not published yet',
+  'result.check.notPublished.body':
+    'Your result has not been published yet. Please check back later.',
+  'result.check.checkAgain': 'Check again',
+  'result.check.error.title': 'Something went wrong',
+  'result.check.error.body':
+    'We could not check your result just now. Please try again in a moment.',
+  'result.check.error.action': 'Back to result check',
+
+  'result.reveal.admitted.title': 'Congratulations!',
+  'result.reveal.admitted.body': 'You have been admitted.',
+  'result.reveal.admitted.nextSteps':
+    'Next, confirm your seat and pay the admission fee before the stated deadline.',
+  'result.reveal.admitted.action': 'Continue to seat confirmation',
+  'result.reveal.meritRank': 'Your merit position: {{rank}}',
+  'result.reveal.waitlisted.title': "You're on the waitlist",
+  'result.reveal.waitlisted.body':
+    'You have not been admitted yet, but you are on the waitlist for your applied program(s), based on your submitted preference order and merit position.',
+  'result.reveal.waitlisted.nextSteps':
+    "We'll notify you if a seat becomes available. No action is needed from you right now.",
+  'result.reveal.waitlistRank': 'Your waitlist position: {{rank}}',
+  'result.reveal.notAdmitted.title': 'Your result is ready',
+  'result.reveal.notAdmitted.body':
+    'You have not been admitted this time, based on your submitted preference order and merit position.',
+  'result.reveal.notAdmitted.nextSteps':
+    'Thank you for applying. Please watch for information on future admission cycles.',
 };

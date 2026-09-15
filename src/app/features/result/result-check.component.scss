@@ -1,0 +1,81 @@
+// Token-only (requirement-spec.md §2). Logical properties for RTL-readiness.
+:host {
+  display: block;
+}
+
+.result-check {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-inline-size: 560px;
+  margin-inline: auto;
+  padding-block-start: var(--space-8);
+}
+
+// §7 "the waiting room... gentle ambient motion (a slow, looping progress indicator) so the
+// screen never reads as frozen or broken" -- reused verbatim from PaymentConfirmationComponent's
+// own established indeterminate-spinner pattern (see its class doc for why a plain CSS spinner is
+// used here rather than the design system's determinate UmsProgressRingComponent).
+.result-check__spinner {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border: 3px solid var(--color-border);
+  border-block-start-color: var(--color-primary);
+  border-radius: var(--radius-circle);
+  animation: result-check-spin 1.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result-check__spinner {
+    animation: none;
+  }
+}
+
+@keyframes result-check-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// §7 "The result reveal: ... a brief, deliberate reveal transition (a short, tasteful animation
+// -- a card turning over or a gentle fade-and-scale into view, under a second, skippable/instant
+// for reduced-motion preference)".
+.result-check__outcome {
+  animation: result-reveal var(--motion-slow) var(--ease-emphasized-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result-check__outcome {
+    animation: none;
+  }
+}
+
+@keyframes result-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// §7: admitted gets a warm, celebratory but dignified treatment; not-admitted/waitlisted get
+// equal visual craftsmanship, calm and respectful -- never a stark, cold treatment (Domain
+// Invariant #7). Both branches share the same layout/typography; only the accent differs.
+.result-check__outcome--admitted {
+  border-inline-start: 4px solid var(--color-success);
+  padding-inline-start: var(--space-4);
+}
+
+.result-check__outcome--waitlisted {
+  border-inline-start: 4px solid var(--color-warning);
+  padding-inline-start: var(--space-4);
+}
+
+.result-check__outcome--not-admitted {
+  border-inline-start: 4px solid var(--color-border);
+  padding-inline-start: var(--space-4);
+}

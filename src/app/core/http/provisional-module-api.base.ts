@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { toUmsApiError, type UmsApiError } from '@ums/shared';
 import { APP_CONFIG } from '../config/app-config';
+import { QueueingRequiredError } from './queueing-required.error';
 
 /**
  * Base for a **provisional** module data-access client (AWEB-5).
@@ -44,10 +45,26 @@ export abstract class ProvisionalModuleApiBase {
     return `${this.baseUrl}/api/v1/${trimmed}`;
   }
 
-  /** Normalizes any failure the same way a generated service's caller would see it. */
+  /**
+   * Normalizes any failure the same way a generated service's caller would see it -- with one
+   * deliberate exception: a {@link QueueingRequiredError} (AWEB-7's `queueingInterceptor`) is
+   * re-thrown completely unchanged, never flattened through `toUmsApiError`. `toUmsApiError` only
+   * special-cases `HttpErrorResponse`; any other `Error` (this one included) falls through its
+   * generic `{ status: 0, message: error.message }` branch, which would silently discard the
+   * error's own `.status: QueueStatus` payload and its very identity as "you're queued, not
+   * failed" -- exactly the distinction `QueueingRequiredError` exists to preserve one layer up
+   * from `QueueStateService` (see its own class doc). A feature reading a queued response (AWEB-27's
+   * waiting room) needs `instanceof QueueingRequiredError` to keep working through this base class,
+   * not a generically-normalized error indistinguishable from any other failure.
+   */
   protected normalizeErrors<T>(source$: Observable<T>): Observable<T> {
     return source$.pipe(
-      catchError((error: unknown) => throwError(() => toUmsApiError(error) satisfies UmsApiError)),
+      catchError((error: unknown) => {
+        if (error instanceof QueueingRequiredError) {
+          return throwError(() => error);
+        }
+        return throwError(() => toUmsApiError(error) satisfies UmsApiError);
+      }),
     );
   }
 }

@@ -6,6 +6,7 @@ import { TestBed } from '@angular/core/testing';
 import { firstValueFrom, of, throwError } from 'rxjs';
 import { APP_CONFIG } from '../config/app-config';
 import { ProvisionalModuleApiBase } from './provisional-module-api.base';
+import { QueueingRequiredError } from './queueing-required.error';
 
 @Injectable()
 class FakeAdmissionApi extends ProvisionalModuleApiBase {
@@ -19,6 +20,19 @@ class FakeAdmissionApi extends ProvisionalModuleApiBase {
 
   succeeds() {
     return this.normalizeErrors(of('ok'));
+  }
+
+  queued() {
+    return this.normalizeErrors(
+      throwError(
+        () =>
+          new QueueingRequiredError({
+            queued: true,
+            nextPollMs: 5000,
+            intervalIsServerSuggested: false,
+          }),
+      ),
+    );
   }
 }
 
@@ -57,5 +71,11 @@ describe('ProvisionalModuleApiBase', () => {
 
   it('passes a successful value through unchanged', async () => {
     await expectAsync(firstValueFrom(api.succeeds())).toBeResolvedTo('ok');
+  });
+
+  it('re-throws a QueueingRequiredError unchanged rather than flattening it through toUmsApiError', async () => {
+    await expectAsync(firstValueFrom(api.queued())).toBeRejectedWith(
+      jasmine.any(QueueingRequiredError),
+    );
   });
 });

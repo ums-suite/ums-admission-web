@@ -50,6 +50,11 @@ describe('app.routes (AWEB-6 routing shell)', () => {
     expect(location.path()).toBe('/app/result');
   });
 
+  it('allows the result-check sub-route through with no session at all (AWEB-26/27/28)', async () => {
+    await router.navigateByUrl('/app/result/check?applicationNumber=APP-1');
+    expect(location.path()).toBe('/app/result/check?applicationNumber=APP-1');
+  });
+
   it('redirects an unauthenticated applicant away from the exam attempt screen to login', async () => {
     await router.navigateByUrl('/app/exam/attempt/attempt-1');
     expect(location.path()).toContain('/app/login');
