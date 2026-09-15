@@ -13,7 +13,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test --runner=karma",
     "test:watch": "ng test --runner=karma --watch=true",
-    "test:ci": "ng test --runner=karma --watch=false --browsers=ChromeHeadless --code-coverage",
+    "test:ci": "ng test --runner=karma --watch=false --browsers=ChromeHeadless --coverage",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
