@@ -92,6 +92,13 @@ export const routes: Routes = [
               ),
           },
           { path: 'payment', loadComponent: placeholder, data: { label: 'Fee payment' } },
+          {
+            path: 'admit-card/:applicationId',
+            loadComponent: () =>
+              import('./features/admit-card/admit-card.component').then(
+                (m) => m.AdmitCardComponent,
+              ),
+          },
           { path: 'admit-card', loadComponent: placeholder, data: { label: 'Admit card' } },
           { path: 'exam', loadComponent: placeholder, data: { label: 'Admission test' } },
           {

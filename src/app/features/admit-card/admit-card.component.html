@@ -1,0 +1,56 @@
+@switch (state()) {
+  @case ('loading') {
+    <p>{{ 'admitCard.loading' | translate }}</p>
+  }
+  @case ('not-available') {
+    <section class="admit-card admit-card--not-available">
+      <h1>{{ 'admitCard.title' | translate }}</h1>
+      <p>{{ 'admitCard.notAvailable.body' | translate }}</p>
+    </section>
+  }
+  @case ('preparing') {
+    <section class="admit-card admit-card--preparing" role="status">
+      <h1>{{ 'admitCard.title' | translate }}</h1>
+      <p>{{ 'admitCard.preparing.body' | translate }}</p>
+    </section>
+  }
+  @case ('failed') {
+    <section class="admit-card admit-card--failed" role="alert">
+      <h1>{{ 'admitCard.title' | translate }}</h1>
+      <p>{{ 'admitCard.failed.body' | translate }}</p>
+    </section>
+  }
+  @case ('ready') {
+    <section class="admit-card admit-card--ready">
+      <h1>{{ 'admitCard.title' | translate }}</h1>
+
+      <ums-card variant="content" [title]="'admitCard.details.title' | translate">
+        @if (rollNumber()) {
+          <p>
+            {{ 'admitCard.rollNumber' | translate }}: <strong>{{ rollNumber() }}</strong>
+          </p>
+        }
+        @if (assignedTestSlotId()) {
+          <p>
+            {{ 'admitCard.testSlot' | translate }}: <strong>{{ assignedTestSlotId() }}</strong>
+          </p>
+        }
+        @if (document(); as doc) {
+          <p>
+            {{ 'admitCard.verificationId' | translate }}:
+            <code>{{ doc.digitalVerificationId }}</code>
+          </p>
+        }
+      </ums-card>
+
+      @if (document()?.downloadUrl; as downloadUrl) {
+        <ums-button type="button" (click)="openDownload(downloadUrl)">
+          {{ 'admitCard.download' | translate }}
+        </ums-button>
+      }
+    </section>
+  }
+  @case ('error') {
+    <p role="alert">{{ 'admitCard.error' | translate }}</p>
+  }
+}

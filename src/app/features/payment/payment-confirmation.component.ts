@@ -121,7 +121,8 @@ export class PaymentConfirmationComponent implements OnInit {
   }
 
   protected continue(): void {
-    void this.router.navigateByUrl('/app/admit-card');
+    const applicationId = this.applicationId();
+    void this.router.navigateByUrl(applicationId ? `/app/admit-card/${applicationId}` : '/app');
   }
 
   private pollOnce(paymentId: string): void {

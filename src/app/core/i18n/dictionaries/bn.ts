@@ -169,4 +169,19 @@ export const BN_TRANSLATIONS: TranslationDictionary = {
   'payment.confirmation.notFound.body':
     'আপনি অন্য কোনোভাবে এই পাতায় ফিরে এলে এমনটি হতে পারে। আপনার অর্থ নিরাপদ আছে — আসুন আপনাকে পেমেন্টে ফিরিয়ে নিয়ে যাই।',
   'payment.confirmation.notFound.action': 'পেমেন্টে যান',
+
+  'admitCard.loading': 'আপনার প্রবেশপত্র লোড হচ্ছে…',
+  'admitCard.title': 'প্রবেশপত্র',
+  'admitCard.notAvailable.body':
+    'আপনার পরীক্ষার স্লট নির্ধারিত হওয়ার এবং আবেদন ফি নিশ্চিত হওয়ার পর আপনার প্রবেশপত্র এখানে পাওয়া যাবে।',
+  'admitCard.preparing.body':
+    'আপনার প্রবেশপত্র প্রস্তুত করা হচ্ছে। এটি সাধারণত অল্প সময় নেয় — অনুগ্রহ করে আবার দেখুন।',
+  'admitCard.failed.body':
+    'আমরা আপনার প্রবেশপত্র তৈরি করতে পারিনি। অনুগ্রহ করে সহায়তার সাথে যোগাযোগ করুন — এতে আপনার পরীক্ষার স্লট প্রভাবিত হয় না।',
+  'admitCard.details.title': 'আপনার পরীক্ষার তথ্য',
+  'admitCard.rollNumber': 'রোল নম্বর',
+  'admitCard.testSlot': 'পরীক্ষার স্লট',
+  'admitCard.verificationId': 'যাচাইকরণ কোড',
+  'admitCard.download': 'প্রবেশপত্র ডাউনলোড করুন',
+  'admitCard.error': 'আপনার প্রবেশপত্র লোড করা যায়নি। পরে আবার চেষ্টা করুন।',
 };

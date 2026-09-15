@@ -169,4 +169,19 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
   'payment.confirmation.notFound.body':
     'This can happen if you returned to this page a different way than expected. Your money is safe -- let us take you back to start or resume your payment.',
   'payment.confirmation.notFound.action': 'Go to payment',
+
+  'admitCard.loading': 'Loading your admit card…',
+  'admitCard.title': 'Admit Card',
+  'admitCard.notAvailable.body':
+    'Your admit card will be available here once your test slot has been assigned and your application fee payment is confirmed.',
+  'admitCard.preparing.body':
+    'Your admit card is being prepared. This usually only takes a short while -- please check back soon.',
+  'admitCard.failed.body':
+    'We were unable to generate your admit card. Please contact support -- your test slot assignment is not affected.',
+  'admitCard.details.title': 'Your test details',
+  'admitCard.rollNumber': 'Roll number',
+  'admitCard.testSlot': 'Test slot',
+  'admitCard.verificationId': 'Verification code',
+  'admitCard.download': 'Download admit card',
+  'admitCard.error': 'We could not load your admit card. Please try again later.',
 };
