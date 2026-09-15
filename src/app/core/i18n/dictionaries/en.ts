@@ -61,4 +61,127 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
   'login.serverError.generic': 'We could not sign you in with those details. Please try again.',
   'validation.identifier.required': 'Please enter your email or username.',
   'validation.password.required': 'Please enter your password.',
+
+  'profile.loading': 'Loading your profile…',
+  'profile.title': 'Complete your profile',
+  'profile.subtitle':
+    'A few more details before you start your application — your present address and, if applicable, your guardian.',
+  'profile.presentAddress.label': 'Present address',
+  'profile.guardian.heading': 'Guardian information',
+  'profile.guardian.hint':
+    "If the campaign you're applying to requires a guardian on file, fill in all three fields below.",
+  'profile.guardianName.label': "Guardian's name",
+  'profile.guardianRelation.label': 'Relationship to you',
+  'profile.guardianContact.label': "Guardian's phone or email",
+  'profile.save': 'Save profile',
+  'profile.saving': 'Saving…',
+  'profile.saved': 'Your profile has been saved.',
+  'profile.continueToWizard': 'Continue to application',
+  'profile.loadError': 'We could not load your profile. Please refresh and try again.',
+  'profile.serverError.generic': 'Something went wrong while saving. Please try again.',
+
+  'validation.presentAddress.required': 'Please enter your present address.',
+  'validation.guardianName.required': "Please enter your guardian's name.",
+  'validation.guardianRelation.required': 'Please enter your relationship to your guardian.',
+  'validation.guardianContact.required': 'Please enter a way to contact your guardian.',
+
+  'wizard.loading': 'Loading your application…',
+  'wizard.next': 'Next',
+  'wizard.back': 'Back',
+  'wizard.deadlinePassed':
+    'The application deadline for this campaign has passed. No further edits or submission are possible.',
+  'wizard.step.programChoices': 'Program choices',
+  'wizard.step.academicHistory': 'Academic history',
+  'wizard.step.documents': 'Documents',
+  'wizard.step.review': 'Review & submit',
+
+  'wizard.programChoices.title': 'Choose your programs',
+  'wizard.programChoices.subtitle':
+    'Add the programs you want to apply for, in order of preference. You can reorder or remove them at any time before submitting.',
+  'wizard.programChoices.loading': 'Loading available programs…',
+  'wizard.programChoices.addPlaceholder': 'Select a program to add',
+  'wizard.programChoices.add': 'Add',
+  'wizard.programChoices.moveUp': 'Move up',
+  'wizard.programChoices.moveDown': 'Move down',
+  'wizard.programChoices.remove': 'Remove',
+  'wizard.programChoices.required': 'Please choose at least one program.',
+  'wizard.programChoices.serverError': 'We could not save your program choices. Please try again.',
+  'wizard.programChoices.eligibilityKnown': 'Eligibility rules apply to this program',
+
+  'wizard.academicHistory.title': 'Your academic history',
+  'wizard.academicHistory.subtitle': 'Add every examination result relevant to your eligibility.',
+  'wizard.academicHistory.examName.label': 'Examination name',
+  'wizard.academicHistory.board.label': 'Board/university',
+  'wizard.academicHistory.passingYear.label': 'Passing year',
+  'wizard.academicHistory.score.label': 'Score',
+  'wizard.academicHistory.scale.label': 'Score type',
+  'wizard.academicHistory.scale.gpa': 'GPA',
+  'wizard.academicHistory.scale.percentage': 'Percentage',
+  'wizard.academicHistory.add': 'Add record',
+  'wizard.academicHistory.remove': 'Remove',
+  'wizard.academicHistory.required': 'Please add at least one academic record.',
+  'wizard.academicHistory.serverError':
+    'We could not save one of your academic records. Please try again.',
+
+  'wizard.documents.title': 'Upload your documents',
+  'wizard.documents.subtitle':
+    'Upload each required document below. Files upload directly and securely -- we will tell you immediately if anything needs fixing.',
+  'wizard.documents.registerError':
+    'Your file uploaded successfully but we could not attach it to your application. Please try again.',
+
+  'wizard.review.title': 'Review your application',
+  'wizard.review.summary.title': 'Application summary',
+  'wizard.review.summary.status': 'Status',
+  'wizard.review.summary.programChoices': 'Program choices',
+  'wizard.review.summary.documents': 'Documents',
+  'wizard.review.lockWarning':
+    'Once you submit, your application will be locked and you will not be able to make further changes.',
+  'wizard.review.alreadyLocked': 'Your application has already been submitted and locked.',
+  'wizard.review.submit': 'Submit application',
+  'wizard.review.confirmTitle': 'Submit and lock your application?',
+  'wizard.review.confirmDescription':
+    'This cannot be undone. Once submitted, your application is locked and no further edits are possible. Please make sure everything above is correct.',
+  'wizard.review.confirmSubmit': 'Yes, submit and lock',
+  'wizard.review.confirmCancel': 'Go back and review again',
+  'wizard.review.serverError': 'We could not submit your application. Please try again.',
+
+  'payment.method.loading': 'Loading your payment details…',
+  'payment.method.alreadyPaid': 'Your application fee has already been paid.',
+  'payment.method.attemptInProgress':
+    'A payment for this application is already being confirmed. Please wait -- we will let you know the moment it is done.',
+  'payment.method.title': 'Pay your application fee',
+  'payment.method.amountTitle': 'Amount due',
+  'payment.method.submit': 'Pay now',
+  'payment.method.submitting': 'Starting payment…',
+  'payment.method.serverError': 'We could not start your payment. Please try again.',
+
+  'payment.confirmation.waiting.title': 'Confirming your payment',
+  'payment.confirmation.waiting.body':
+    'Please do not close this window. We are waiting for your payment provider to confirm your payment -- this usually takes just a few moments.',
+  'payment.confirmation.success.title': 'Payment confirmed',
+  'payment.confirmation.success.body': 'Your application fee payment has been confirmed.',
+  'payment.confirmation.success.action': 'Continue',
+  'payment.confirmation.failed.title': 'Payment was not successful',
+  'payment.confirmation.failed.body':
+    'Your payment could not be completed. No amount was charged for this attempt. You can try again with the same or a different payment method.',
+  'payment.confirmation.failed.action': 'Try again',
+  'payment.confirmation.notFound.title': 'We could not find that payment attempt',
+  'payment.confirmation.notFound.body':
+    'This can happen if you returned to this page a different way than expected. Your money is safe -- let us take you back to start or resume your payment.',
+  'payment.confirmation.notFound.action': 'Go to payment',
+
+  'admitCard.loading': 'Loading your admit card…',
+  'admitCard.title': 'Admit Card',
+  'admitCard.notAvailable.body':
+    'Your admit card will be available here once your test slot has been assigned and your application fee payment is confirmed.',
+  'admitCard.preparing.body':
+    'Your admit card is being prepared. This usually only takes a short while -- please check back soon.',
+  'admitCard.failed.body':
+    'We were unable to generate your admit card. Please contact support -- your test slot assignment is not affected.',
+  'admitCard.details.title': 'Your test details',
+  'admitCard.rollNumber': 'Roll number',
+  'admitCard.testSlot': 'Test slot',
+  'admitCard.verificationId': 'Verification code',
+  'admitCard.download': 'Download admit card',
+  'admitCard.error': 'We could not load your admit card. Please try again later.',
 };

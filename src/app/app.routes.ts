@@ -62,8 +62,43 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
           { path: '', loadComponent: placeholder, data: { label: 'Dashboard' } },
+          {
+            path: 'profile',
+            loadComponent: () =>
+              import('./features/registration/applicant-profile.component').then(
+                (m) => m.ApplicantProfileComponent,
+              ),
+          },
+          {
+            path: 'wizard/:campaignId',
+            loadComponent: () =>
+              import('./features/wizard/wizard-shell.component').then(
+                (m) => m.WizardShellComponent,
+              ),
+          },
           { path: 'wizard', loadComponent: placeholder, data: { label: 'Application wizard' } },
+          {
+            path: 'payment/:applicationId/confirming',
+            loadComponent: () =>
+              import('./features/payment/payment-confirmation.component').then(
+                (m) => m.PaymentConfirmationComponent,
+              ),
+          },
+          {
+            path: 'payment/:applicationId',
+            loadComponent: () =>
+              import('./features/payment/payment-method-selection.component').then(
+                (m) => m.PaymentMethodSelectionComponent,
+              ),
+          },
           { path: 'payment', loadComponent: placeholder, data: { label: 'Fee payment' } },
+          {
+            path: 'admit-card/:applicationId',
+            loadComponent: () =>
+              import('./features/admit-card/admit-card.component').then(
+                (m) => m.AdmitCardComponent,
+              ),
+          },
           { path: 'admit-card', loadComponent: placeholder, data: { label: 'Admit card' } },
           { path: 'exam', loadComponent: placeholder, data: { label: 'Admission test' } },
           {

@@ -1,0 +1,35 @@
+@if (notFound()) {
+  <section class="payment-confirmation payment-confirmation--not-found">
+    <h1>{{ 'payment.confirmation.notFound.title' | translate }}</h1>
+    <p>{{ 'payment.confirmation.notFound.body' | translate }}</p>
+    <ums-button type="button" (click)="retryPayment()">
+      {{ 'payment.confirmation.notFound.action' | translate }}
+    </ums-button>
+  </section>
+} @else if (isConfirmed()) {
+  <section class="payment-confirmation payment-confirmation--success" role="status">
+    <h1>{{ 'payment.confirmation.success.title' | translate }}</h1>
+    <p>{{ 'payment.confirmation.success.body' | translate }}</p>
+    <ums-button type="button" (click)="continue()">
+      {{ 'payment.confirmation.success.action' | translate }}
+    </ums-button>
+  </section>
+} @else if (isFailed()) {
+  <section class="payment-confirmation payment-confirmation--failed" role="alert">
+    <h1>{{ 'payment.confirmation.failed.title' | translate }}</h1>
+    <p>{{ 'payment.confirmation.failed.body' | translate }}</p>
+    <ums-button type="button" (click)="retryPayment()">
+      {{ 'payment.confirmation.failed.action' | translate }}
+    </ums-button>
+  </section>
+} @else {
+  <section
+    class="payment-confirmation payment-confirmation--waiting"
+    role="status"
+    aria-live="polite"
+  >
+    <div class="payment-confirmation__spinner" aria-hidden="true"></div>
+    <h1>{{ 'payment.confirmation.waiting.title' | translate }}</h1>
+    <p>{{ 'payment.confirmation.waiting.body' | translate }}</p>
+  </section>
+}
