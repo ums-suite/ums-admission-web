@@ -256,4 +256,14 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
   'exam.attempt.submitted.body':
     'Your answers have been received and your attempt is now locked. You will be notified once results are published.',
   'exam.attempt.submitted.goToDashboard': 'Return to dashboard',
+
+  'postResult.documents.loading': 'Loading your document verification status…',
+  'postResult.documents.error':
+    'We could not load your document verification status. Please try again later.',
+  'postResult.documents.title': 'Document verification',
+  'postResult.documents.summary': '{{approved}} of {{total}} documents verified so far',
+  'postResult.documents.none': 'No documents are on file for this application yet.',
+  'postResult.documents.status.Pending': 'Under review',
+  'postResult.documents.status.Approved': 'Verified',
+  'postResult.documents.status.Rejected': 'Needs attention',
 };

@@ -120,8 +120,20 @@ export const routes: Routes = [
           },
           {
             path: 'post-result',
-            loadComponent: placeholder,
-            data: { label: 'Offer & enrollment' },
+            children: [
+              {
+                path: 'documents/:applicationId',
+                loadComponent: () =>
+                  import('./features/post-result/document-verification.component').then(
+                    (m) => m.DocumentVerificationComponent,
+                  ),
+              },
+              {
+                path: '',
+                loadComponent: placeholder,
+                data: { label: 'Offer & enrollment' },
+              },
+            ],
           },
           {
             path: 'officer',

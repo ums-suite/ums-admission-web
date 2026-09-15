@@ -256,4 +256,13 @@ export const BN_TRANSLATIONS: TranslationDictionary = {
   'exam.attempt.submitted.body':
     'আপনার উত্তর গ্রহণ করা হয়েছে এবং আপনার প্রচেষ্টা এখন লক করা হয়েছে। ফলাফল প্রকাশিত হলে আপনাকে জানানো হবে।',
   'exam.attempt.submitted.goToDashboard': 'ড্যাশবোর্ডে ফিরে যান',
+
+  'postResult.documents.loading': 'আপনার নথি যাচাইকরণের অবস্থা লোড হচ্ছে…',
+  'postResult.documents.error': 'আপনার নথি যাচাইকরণের অবস্থা লোড করা যায়নি। পরে আবার চেষ্টা করুন।',
+  'postResult.documents.title': 'নথি যাচাইকরণ',
+  'postResult.documents.summary': '{{total}}টির মধ্যে {{approved}}টি নথি যাচাই করা হয়েছে',
+  'postResult.documents.none': 'এই আবেদনের জন্য এখনও কোনো নথি জমা নেই।',
+  'postResult.documents.status.Pending': 'পর্যালোচনাধীন',
+  'postResult.documents.status.Approved': 'যাচাইকৃত',
+  'postResult.documents.status.Rejected': 'মনোযোগ প্রয়োজন',
 };
