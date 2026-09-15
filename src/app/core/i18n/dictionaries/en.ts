@@ -12,6 +12,5 @@ import type { TranslationDictionary } from '../translation-dictionary.types';
 export const EN_TRANSLATIONS: TranslationDictionary = {
   'marketing.appName': 'ums-admission-web',
   'marketing.tagline': 'Applicant admission portal — registration, application, exam, and results.',
-  'shell.authenticatedPlaceholder': 'Authenticated funnel (CSR) — scaffold placeholder.',
   'common.stepProgress': 'Step {{current}} of {{total}}',
 };

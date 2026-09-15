@@ -9,6 +9,5 @@ import type { TranslationDictionary } from '../translation-dictionary.types';
 export const BN_TRANSLATIONS: TranslationDictionary = {
   'marketing.appName': 'ইউএমএস ভর্তি',
   'marketing.tagline': 'আবেদনকারী ভর্তি পোর্টাল — নিবন্ধন, আবেদন, পরীক্ষা এবং ফলাফল।',
-  'shell.authenticatedPlaceholder': 'প্রমাণীকৃত অংশ (সিএসআর) — স্ক্যাফোল্ড প্লেসহোল্ডার।',
   'common.stepProgress': 'ধাপ {{current}} এর {{total}}',
 };
