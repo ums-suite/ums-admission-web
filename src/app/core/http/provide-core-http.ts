@@ -9,6 +9,7 @@ import {
 } from '@ums/shared';
 import { APP_CONFIG } from '../config/app-config';
 import { environment } from '../../../environments/environment';
+import { queueingInterceptor } from './queueing.interceptor';
 
 /**
  * Wires this app's entire HTTP/API-client layer (AWEB-5, requirement-spec.md §2/§6).
@@ -18,8 +19,10 @@ import { environment } from '../../../environments/environment';
  *    still carries a correlation id.
  * 2. {@link localeInterceptor} next, so every call (including the retry) carries the active
  *    locale.
- * 3. {@link authInterceptor} last, since it's the one that clones the request again for a retry
- *    and reads/attaches the bearer token.
+ * 3. {@link authInterceptor}, since it's the one that clones the request again for a retry and
+ *    reads/attaches the bearer token.
+ * 4. {@link queueingInterceptor} (AWEB-7) last -- a `429` queue signal is unrelated to auth and
+ *    must never race token refresh.
  *
  * `provideApi` wires `@ums/shared`'s generated OpenAPI client (Identity/Audit/Organization today
  * -- see this repo's README "Known cross-team API-contract gaps" and `ums-shared/README.md`
@@ -36,7 +39,12 @@ export function provideCoreHttp(): EnvironmentProviders {
   return makeEnvironmentProviders([
     { provide: APP_CONFIG, useValue: { apiBaseUrl: environment.apiBaseUrl } },
     provideHttpClient(
-      withInterceptors([correlationIdInterceptor, localeInterceptor, authInterceptor]),
+      withInterceptors([
+        correlationIdInterceptor,
+        localeInterceptor,
+        authInterceptor,
+        queueingInterceptor,
+      ]),
     ),
     {
       provide: UMS_AUTH_CONFIG,
