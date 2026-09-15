@@ -1,0 +1,96 @@
+<form class="registration-form" (ngSubmit)="onSubmit()">
+  <h1>{{ 'registration.title' | translate }}</h1>
+  <p>{{ 'registration.subtitle' | translate }}</p>
+
+  <ums-form-field
+    #givenNameField="umsFormField"
+    [label]="'registration.givenName.label' | translate"
+    [required]="true"
+    [errors]="errors.givenName ? [errors.givenName | translate] : []"
+  >
+    <ums-input
+      [id]="givenNameField.controlId()"
+      [ariaDescribedBy]="givenNameField.describedBy()"
+      [invalid]="givenNameField.hasErrors()"
+      [required]="true"
+      [value]="givenName()"
+      (valueChange)="givenName.set($event)"
+      autocomplete="given-name"
+    />
+  </ums-form-field>
+
+  <ums-form-field
+    #familyNameField="umsFormField"
+    [label]="'registration.familyName.label' | translate"
+    [required]="true"
+    [errors]="errors.familyName ? [errors.familyName | translate] : []"
+  >
+    <ums-input
+      [id]="familyNameField.controlId()"
+      [ariaDescribedBy]="familyNameField.describedBy()"
+      [invalid]="familyNameField.hasErrors()"
+      [required]="true"
+      [value]="familyName()"
+      (valueChange)="familyName.set($event)"
+      autocomplete="family-name"
+    />
+  </ums-form-field>
+
+  <ums-form-field
+    #emailField="umsFormField"
+    [label]="'registration.email.label' | translate"
+    [required]="true"
+    [errors]="errors.email ? [errors.email | translate] : []"
+  >
+    <ums-input
+      type="email"
+      [id]="emailField.controlId()"
+      [ariaDescribedBy]="emailField.describedBy()"
+      [invalid]="emailField.hasErrors()"
+      [required]="true"
+      [value]="email()"
+      (valueChange)="email.set($event)"
+      autocomplete="email"
+    />
+  </ums-form-field>
+
+  <ums-form-field
+    #mobileField="umsFormField"
+    [label]="'registration.mobile.label' | translate"
+    [errors]="errors.mobile ? [errors.mobile | translate] : []"
+  >
+    <ums-input
+      type="tel"
+      [id]="mobileField.controlId()"
+      [ariaDescribedBy]="mobileField.describedBy()"
+      [invalid]="mobileField.hasErrors()"
+      [value]="mobile()"
+      (valueChange)="mobile.set($event)"
+      autocomplete="tel"
+    />
+  </ums-form-field>
+
+  <ums-form-field
+    #dobField="umsFormField"
+    [label]="'registration.dateOfBirth.label' | translate"
+    [required]="true"
+    [errors]="errors.dateOfBirth ? [errors.dateOfBirth | translate] : []"
+  >
+    <ums-date-picker
+      [id]="dobField.controlId()"
+      [ariaDescribedBy]="dobField.describedBy()"
+      [invalid]="dobField.hasErrors()"
+      [max]="maxDateOfBirth"
+      [value]="dateOfBirth()"
+      (valueChange)="dateOfBirth.set($event)"
+    />
+  </ums-form-field>
+
+  @if (serverErrorMessage()) {
+    <p class="registration-form__server-error" role="alert">{{ serverErrorMessage() }}</p>
+  }
+
+  <ums-button type="submit" [loading]="submitting()" [disabled]="submitting()" [fullWidth]="true">
+    {{ (submitting() ? 'registration.submitting' : 'registration.submit') | translate }}
+  </ums-button>
+</form>

@@ -1,0 +1,55 @@
+<section class="otp-verification">
+  <h1>{{ 'otp.title' | translate }}</h1>
+
+  @if (!codeRequested()) {
+    <p>{{ 'otp.subtitle' | translate: { destination } }}</p>
+
+    @if (mobile()) {
+      <button
+        type="button"
+        class="otp-verification__channel-toggle"
+        (click)="switchChannel(channel() === 'Email' ? 'Mobile' : 'Email')"
+      >
+        {{ (channel() === 'Email' ? 'otp.useMobileInstead' : 'otp.useEmailInstead') | translate }}
+      </button>
+    }
+
+    <ums-button [loading]="requesting()" [disabled]="requesting()" (click)="requestCode()">
+      {{ (requesting() ? 'otp.sending' : 'otp.sendCode') | translate }}
+    </ums-button>
+  } @else {
+    <p>{{ 'otp.codeSentTo' | translate: { destination } }}</p>
+
+    <ums-otp-input
+      [value]="codeInputValue()"
+      (valueChange)="codeInputValue.set($event)"
+      (completed)="onCodeCompleted($event)"
+      [length]="6"
+    />
+
+    @if (errorMessage()) {
+      <p class="otp-verification__error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <ums-button
+      [loading]="verifying()"
+      [disabled]="verifying() || !completedCode()"
+      (click)="verifyCode()"
+    >
+      {{ (verifying() ? 'otp.verifying' : 'otp.verify') | translate }}
+    </ums-button>
+
+    <button
+      type="button"
+      class="otp-verification__resend"
+      [disabled]="resendCooldownSeconds() > 0 || requesting()"
+      (click)="requestCode()"
+    >
+      {{
+        resendCooldownSeconds() > 0
+          ? ('otp.resendIn' | translate: { seconds: resendCooldownSeconds() })
+          : ('otp.resend' | translate)
+      }}
+    </button>
+  }
+</section>
