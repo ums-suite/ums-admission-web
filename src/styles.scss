@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+// Global styles -- requirement-spec.md §2 (Design system row): every visual value flows through
+// @ums/design-system's tokens; this app never hand-rolls its own color/type/spacing values.
+
+// Hand-authored partials: Google Fonts loading, a minimal reset, and token-backed utility
+// classes (.ums-tnum, .ums-visually-hidden). @use rules must precede all other rules in Sass.
+@use '@ums/design-system/styles/index' as ums;
+
+// tokens.css: token-driven CSS custom properties (light/dark, both @media(prefers-color-scheme)
+// and [data-theme] override) -- loaded as a plain stylesheet, never @use'd into the Sass module
+// graph (matches @ums/design-system's own README consumption instructions).
+
+// KNOWN PACKAGING GAP (flagged in this app's PR, not fixed here -- see README): the published
+// dist package.json's "exports" map only declares "." and "./package.json", so the bare
+// specifier the README itself documents (`@import '@ums/design-system/styles/tokens.css'`)
+// fails to resolve under esbuild's Node "exports" enforcement ("the path ... is not exported by
+// package"). A relative node_modules path sidesteps package-export resolution entirely (relative
+// imports are never subject to the "exports" map) as a stopgap; swap back to the bare specifier
+// once @ums/design-system adds a "./styles/*" entry to its exports map.
+@import '../node_modules/@ums/design-system/styles/tokens.css';
