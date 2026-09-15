@@ -1,0 +1,36 @@
+@if (store.loading()) {
+  <p>{{ 'wizard.loading' | translate }}</p>
+} @else if (store.error()) {
+  <p class="wizard-shell__error" role="alert">{{ store.error() }}</p>
+} @else {
+  <div class="wizard-shell">
+    @if (store.isPastDeadline() && store.isEditable()) {
+      <p class="wizard-shell__deadline-passed" role="alert">
+        {{ 'wizard.deadlinePassed' | translate }}
+      </p>
+    }
+
+    <ums-stepper
+      [steps]="steps"
+      [currentIndex]="currentStepIndex()"
+      (stepClick)="goToStep($event)"
+    />
+
+    <div class="wizard-shell__body">
+      @switch (currentStepId) {
+        @case ('programChoices') {
+          <app-program-choice-step (next)="advance()" />
+        }
+        @case ('academicHistory') {
+          <app-academic-history-step (next)="advance()" (back)="goBack()" />
+        }
+        @case ('documents') {
+          <app-document-upload-step (next)="advance()" (back)="goBack()" />
+        }
+        @case ('review') {
+          <app-review-submit-step (back)="goBack()" />
+        }
+      }
+    </div>
+  </div>
+}

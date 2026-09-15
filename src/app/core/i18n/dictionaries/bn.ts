@@ -82,4 +82,66 @@ export const BN_TRANSLATIONS: TranslationDictionary = {
   'validation.guardianRelation.required': 'অনুগ্রহ করে আপনার অভিভাবকের সাথে সম্পর্ক লিখুন।',
   'validation.guardianContact.required':
     'অনুগ্রহ করে আপনার অভিভাবকের সাথে যোগাযোগের একটি উপায় লিখুন।',
+
+  'wizard.loading': 'আপনার আবেদন লোড হচ্ছে…',
+  'wizard.next': 'পরবর্তী',
+  'wizard.back': 'পেছনে',
+  'wizard.deadlinePassed':
+    'এই ক্যাম্পেইনের আবেদনের সময়সীমা শেষ হয়ে গেছে। আর কোনো পরিবর্তন বা জমা দেওয়া সম্ভব নয়।',
+  'wizard.step.programChoices': 'প্রোগ্রাম পছন্দ',
+  'wizard.step.academicHistory': 'শিক্ষাগত ইতিহাস',
+  'wizard.step.documents': 'ডকুমেন্ট',
+  'wizard.step.review': 'পর্যালোচনা ও জমা দিন',
+
+  'wizard.programChoices.title': 'আপনার প্রোগ্রাম নির্বাচন করুন',
+  'wizard.programChoices.subtitle':
+    'আপনি যেসব প্রোগ্রামে আবেদন করতে চান তা পছন্দের ক্রম অনুসারে যোগ করুন। জমা দেওয়ার আগে যেকোনো সময় ক্রম পরিবর্তন বা মুছে ফেলতে পারবেন।',
+  'wizard.programChoices.loading': 'উপলব্ধ প্রোগ্রামগুলো লোড হচ্ছে…',
+  'wizard.programChoices.addPlaceholder': 'যোগ করার জন্য একটি প্রোগ্রাম নির্বাচন করুন',
+  'wizard.programChoices.add': 'যোগ করুন',
+  'wizard.programChoices.moveUp': 'উপরে সরান',
+  'wizard.programChoices.moveDown': 'নিচে সরান',
+  'wizard.programChoices.remove': 'মুছে ফেলুন',
+  'wizard.programChoices.required': 'অনুগ্রহ করে অন্তত একটি প্রোগ্রাম নির্বাচন করুন।',
+  'wizard.programChoices.serverError':
+    'আপনার প্রোগ্রাম পছন্দ সংরক্ষণ করা যায়নি। আবার চেষ্টা করুন।',
+  'wizard.programChoices.eligibilityKnown': 'এই প্রোগ্রামে যোগ্যতার নিয়ম প্রযোজ্য',
+
+  'wizard.academicHistory.title': 'আপনার শিক্ষাগত ইতিহাস',
+  'wizard.academicHistory.subtitle':
+    'আপনার যোগ্যতার সাথে সম্পর্কিত প্রতিটি পরীক্ষার ফলাফল যোগ করুন।',
+  'wizard.academicHistory.examName.label': 'পরীক্ষার নাম',
+  'wizard.academicHistory.board.label': 'বোর্ড/বিশ্ববিদ্যালয়',
+  'wizard.academicHistory.passingYear.label': 'পাসের সাল',
+  'wizard.academicHistory.score.label': 'ফলাফল',
+  'wizard.academicHistory.scale.label': 'ফলাফলের ধরন',
+  'wizard.academicHistory.scale.gpa': 'জিপিএ',
+  'wizard.academicHistory.scale.percentage': 'শতাংশ',
+  'wizard.academicHistory.add': 'রেকর্ড যোগ করুন',
+  'wizard.academicHistory.remove': 'মুছে ফেলুন',
+  'wizard.academicHistory.required': 'অনুগ্রহ করে অন্তত একটি শিক্ষাগত রেকর্ড যোগ করুন।',
+  'wizard.academicHistory.serverError':
+    'আপনার একটি শিক্ষাগত রেকর্ড সংরক্ষণ করা যায়নি। আবার চেষ্টা করুন।',
+
+  'wizard.documents.title': 'আপনার ডকুমেন্ট আপলোড করুন',
+  'wizard.documents.subtitle':
+    'নিচের প্রতিটি প্রয়োজনীয় ডকুমেন্ট আপলোড করুন। ফাইল সরাসরি ও নিরাপদে আপলোড হয় — কিছু ঠিক করার প্রয়োজন হলে আমরা সাথে সাথে জানিয়ে দেব।',
+  'wizard.documents.registerError':
+    'আপনার ফাইল সফলভাবে আপলোড হয়েছে কিন্তু আবেদনের সাথে যুক্ত করা যায়নি। আবার চেষ্টা করুন।',
+
+  'wizard.review.title': 'আপনার আবেদন পর্যালোচনা করুন',
+  'wizard.review.summary.title': 'আবেদনের সারসংক্ষেপ',
+  'wizard.review.summary.status': 'অবস্থা',
+  'wizard.review.summary.programChoices': 'প্রোগ্রাম পছন্দ',
+  'wizard.review.summary.documents': 'ডকুমেন্ট',
+  'wizard.review.lockWarning':
+    'একবার জমা দিলে আপনার আবেদন লক হয়ে যাবে এবং আর কোনো পরিবর্তন করা যাবে না।',
+  'wizard.review.alreadyLocked': 'আপনার আবেদন ইতিমধ্যে জমা দেওয়া ও লক করা হয়েছে।',
+  'wizard.review.submit': 'আবেদন জমা দিন',
+  'wizard.review.confirmTitle': 'আপনার আবেদন জমা দিয়ে লক করবেন?',
+  'wizard.review.confirmDescription':
+    'এটি পূর্বাবস্থায় ফেরানো যাবে না। একবার জমা দিলে আপনার আবেদন লক হয়ে যাবে এবং আর কোনো পরিবর্তন সম্ভব নয়। অনুগ্রহ করে উপরের সবকিছু সঠিক কিনা নিশ্চিত করুন।',
+  'wizard.review.confirmSubmit': 'হ্যাঁ, জমা দিয়ে লক করুন',
+  'wizard.review.confirmCancel': 'ফিরে গিয়ে আবার পর্যালোচনা করুন',
+  'wizard.review.serverError': 'আপনার আবেদন জমা দেওয়া যায়নি। আবার চেষ্টা করুন।',
 };

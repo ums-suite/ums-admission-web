@@ -1,0 +1,70 @@
+<section class="review-submit-step">
+  <h2>{{ 'wizard.review.title' | translate }}</h2>
+
+  @if (store.application(); as application) {
+    <ums-card variant="content" [title]="'wizard.review.summary.title' | translate">
+      <p>
+        {{ 'wizard.review.summary.status' | translate }}:
+        <strong>{{ application.status }}</strong>
+      </p>
+
+      <h3>{{ 'wizard.review.summary.programChoices' | translate }}</h3>
+      <ol>
+        @for (choice of application.programChoices; track choice.programId) {
+          <li>{{ choice.rank }}. {{ choice.programId }}</li>
+        }
+      </ol>
+
+      <h3>{{ 'wizard.review.summary.documents' | translate }}</h3>
+      <ul>
+        @for (document of application.documents; track document.id) {
+          <li>{{ document.documentType }} — {{ document.status }}</li>
+        }
+      </ul>
+    </ums-card>
+
+    @if (application.status !== 'Draft') {
+      <p class="review-submit-step__locked" role="status">
+        {{ 'wizard.review.alreadyLocked' | translate }}
+      </p>
+    } @else {
+      <p class="review-submit-step__warning">{{ 'wizard.review.lockWarning' | translate }}</p>
+    }
+  }
+
+  @if (errorMessage()) {
+    <p class="review-submit-step__error" role="alert">{{ errorMessage() }}</p>
+  }
+
+  <div class="review-submit-step__actions">
+    <ums-button type="button" variant="secondary" (click)="back.emit()">
+      {{ 'wizard.back' | translate }}
+    </ums-button>
+    @if (store.application()?.status === 'Draft') {
+      <ums-button
+        type="button"
+        [loading]="submitting()"
+        [disabled]="submitting()"
+        (click)="openConfirm()"
+      >
+        {{ 'wizard.review.submit' | translate }}
+      </ums-button>
+    }
+  </div>
+
+  <ums-modal
+    [open]="confirmDialogOpen()"
+    [title]="'wizard.review.confirmTitle' | translate"
+    (closed)="onCancelled()"
+  >
+    <p>{{ 'wizard.review.confirmDescription' | translate }}</p>
+    <div umsModalFooter>
+      <ums-button type="button" variant="secondary" (click)="onCancelled()">
+        {{ 'wizard.review.confirmCancel' | translate }}
+      </ums-button>
+      <ums-button type="button" (click)="onConfirmed()">
+        {{ 'wizard.review.confirmSubmit' | translate }}
+      </ums-button>
+    </div>
+  </ums-modal>
+</section>

@@ -1,0 +1,58 @@
+<section class="academic-history-step">
+  <h2>{{ 'wizard.academicHistory.title' | translate }}</h2>
+  <p>{{ 'wizard.academicHistory.subtitle' | translate }}</p>
+
+  @if (records().length > 0) {
+    <ul class="academic-history-step__list">
+      @for (record of records(); track $index; let i = $index) {
+        <li>
+          {{ record.examName }} — {{ record.board }} ({{ record.passingYear }}), {{ record.score }}
+          {{ record.isGpaScale ? 'GPA' : '%' }}
+          <button type="button" (click)="removeRecord(i)">
+            {{ 'wizard.academicHistory.remove' | translate }}
+          </button>
+        </li>
+      }
+    </ul>
+  }
+
+  <div class="academic-history-step__form">
+    <ums-form-field [label]="'wizard.academicHistory.examName.label' | translate">
+      <ums-input [value]="examName()" (valueChange)="examName.set($event)" />
+    </ums-form-field>
+    <ums-form-field [label]="'wizard.academicHistory.board.label' | translate">
+      <ums-input [value]="board()" (valueChange)="board.set($event)" />
+    </ums-form-field>
+    <ums-form-field [label]="'wizard.academicHistory.passingYear.label' | translate">
+      <ums-input type="number" [value]="passingYear()" (valueChange)="passingYear.set($event)" />
+    </ums-form-field>
+    <ums-form-field [label]="'wizard.academicHistory.score.label' | translate">
+      <ums-input type="number" [value]="score()" (valueChange)="score.set($event)" />
+    </ums-form-field>
+    <ums-form-field [label]="'wizard.academicHistory.scale.label' | translate">
+      <ums-select [options]="scaleOptions" [value]="scale()" (valueChange)="scale.set($event)" />
+    </ums-form-field>
+
+    <ums-button type="button" variant="secondary" (click)="addRecord()" [disabled]="!canAddRecord">
+      {{ 'wizard.academicHistory.add' | translate }}
+    </ums-button>
+  </div>
+
+  @if (errorMessage()) {
+    <p class="academic-history-step__error" role="alert">{{ errorMessage() }}</p>
+  }
+
+  <div class="academic-history-step__actions">
+    <ums-button type="button" variant="secondary" (click)="back.emit()">
+      {{ 'wizard.back' | translate }}
+    </ums-button>
+    <ums-button
+      type="button"
+      [loading]="submitting()"
+      [disabled]="submitting() || !store.isEditable()"
+      (click)="onSubmit()"
+    >
+      {{ 'wizard.next' | translate }}
+    </ums-button>
+  </div>
+</section>

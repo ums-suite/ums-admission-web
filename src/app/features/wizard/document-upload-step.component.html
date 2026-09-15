@@ -1,0 +1,25 @@
+<section class="document-upload-step">
+  <h2>{{ 'wizard.documents.title' | translate }}</h2>
+  <p>{{ 'wizard.documents.subtitle' | translate }}</p>
+
+  @for (documentType of requiredTypes(); track documentType) {
+    <div class="document-upload-step__card">
+      <h3>{{ documentType }}</h3>
+      <ums-file-upload
+        [files]="filesFor(documentType)"
+        [multiple]="false"
+        (filesSelected)="onFilesSelected(documentType, $event)"
+        (retryRequested)="retry(documentType)"
+      />
+    </div>
+  }
+
+  <div class="document-upload-step__actions">
+    <ums-button type="button" variant="secondary" (click)="back.emit()">
+      {{ 'wizard.back' | translate }}
+    </ums-button>
+    <ums-button type="button" [disabled]="!allAccepted()" (click)="onSubmit()">
+      {{ 'wizard.next' | translate }}
+    </ums-button>
+  </div>
+</section>

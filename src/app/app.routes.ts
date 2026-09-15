@@ -69,6 +69,13 @@ export const routes: Routes = [
                 (m) => m.ApplicantProfileComponent,
               ),
           },
+          {
+            path: 'wizard/:campaignId',
+            loadComponent: () =>
+              import('./features/wizard/wizard-shell.component').then(
+                (m) => m.WizardShellComponent,
+              ),
+          },
           { path: 'wizard', loadComponent: placeholder, data: { label: 'Application wizard' } },
           { path: 'payment', loadComponent: placeholder, data: { label: 'Fee payment' } },
           { path: 'admit-card', loadComponent: placeholder, data: { label: 'Admit card' } },

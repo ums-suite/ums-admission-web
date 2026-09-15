@@ -1,0 +1,67 @@
+<section class="program-choice-step">
+  <h2>{{ 'wizard.programChoices.title' | translate }}</h2>
+  <p>{{ 'wizard.programChoices.subtitle' | translate }}</p>
+
+  @if (loadingPrograms()) {
+    <p>{{ 'wizard.programChoices.loading' | translate }}</p>
+  } @else {
+    <ol class="program-choice-step__list">
+      @for (choice of orderedChoices(); track choice.programId; let i = $index) {
+        <li>
+          <span class="program-choice-step__rank">{{ choice.rank }}</span>
+          <span class="program-choice-step__name">{{
+            choice.program?.name ?? choice.programId
+          }}</span>
+          @if (choice.eligibilityWarning) {
+            <ums-badge variant="info">{{ choice.eligibilityWarning }}</ums-badge>
+          }
+          <div class="program-choice-step__row-actions">
+            <button type="button" (click)="moveUp(i)" [disabled]="i === 0">
+              {{ 'wizard.programChoices.moveUp' | translate }}
+            </button>
+            <button
+              type="button"
+              (click)="moveDown(i)"
+              [disabled]="i === orderedChoices().length - 1"
+            >
+              {{ 'wizard.programChoices.moveDown' | translate }}
+            </button>
+            <button type="button" (click)="removeChoice(choice.programId)">
+              {{ 'wizard.programChoices.remove' | translate }}
+            </button>
+          </div>
+        </li>
+      }
+    </ol>
+
+    <div class="program-choice-step__add">
+      <ums-select
+        [options]="availableOptions()"
+        [value]="pendingProgramId()"
+        [placeholder]="'wizard.programChoices.addPlaceholder' | translate"
+        (valueChange)="pendingProgramId.set($event)"
+      />
+      <ums-button
+        type="button"
+        variant="secondary"
+        (click)="addChoice()"
+        [disabled]="!pendingProgramId()"
+      >
+        {{ 'wizard.programChoices.add' | translate }}
+      </ums-button>
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <p class="program-choice-step__error" role="alert">{{ errorMessage() }}</p>
+  }
+
+  <ums-button
+    type="button"
+    [loading]="store.saving()"
+    [disabled]="store.saving() || !store.isEditable()"
+    (click)="onSubmit()"
+  >
+    {{ 'wizard.next' | translate }}
+  </ums-button>
+</section>
