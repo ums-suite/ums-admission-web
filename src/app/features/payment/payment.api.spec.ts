@@ -49,4 +49,19 @@ describe('PaymentApi', () => {
     expect(req.request.method).toBe('GET');
     req.flush({ id: 'invoice-1', totalAmount: 500, currency: 'BDT', status: 'Open' });
   });
+
+  it('initiates a confirmation-fee payment with the idempotency key on the header', () => {
+    api.initiateConfirmationFeePayment('app-1', 'bKash', 'key-456').subscribe();
+
+    const req = httpMock.expectOne(
+      `${baseUrl}/api/v1/admission/applications/app-1/confirmation-payment`,
+    );
+    expect(req.request.method).toBe('POST');
+    expect(req.request.headers.get('Idempotency-Key')).toBe('key-456');
+    expect(req.request.body).toEqual({ paymentMethod: 'bKash' });
+    req.flush({
+      payment: { id: 'payment-2', invoiceId: 'invoice-2', status: 'Initiated' },
+      redirectUrl: 'https://gateway.example/pay',
+    });
+  });
 });

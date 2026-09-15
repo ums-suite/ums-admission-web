@@ -48,6 +48,12 @@
           {{ 'admitCard.download' | translate }}
         </ums-button>
       }
+
+      @if (applicationId()) {
+        <ums-button type="button" variant="secondary" (click)="beginExam()">
+          {{ 'admitCard.beginExam' | translate }}
+        </ums-button>
+      }
     </section>
   }
   @case ('error') {

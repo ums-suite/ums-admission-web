@@ -1,0 +1,124 @@
+// Token-only (requirement-spec.md §2 Design system row): every value here resolves to
+// @ums/design-system's CSS custom properties, never a hardcoded color/spacing value. Logical
+// properties throughout for RTL-readiness (requirement-spec.md §8 posture, mirrored across this app).
+:host {
+  display: block;
+}
+
+.exam-attempt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-inline-size: 720px;
+  margin-inline: auto;
+}
+
+.exam-attempt__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+// §7: "color transitions gradually (neutral -> amber -> a restrained red), never a jarring
+// flash" -- driven purely by the [data-tone] attribute set from `timerTone()`, never inline styles.
+.exam-attempt__timer {
+  font-size: var(--type-body-lg-font-size);
+  font-weight: 700;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+  transition:
+    color var(--motion-base) var(--ease-standard),
+    background-color var(--motion-base) var(--ease-standard);
+
+  &[data-tone='warning'] {
+    background-color: var(--color-warning);
+    color: var(--color-on-warning);
+  }
+
+  &[data-tone='critical'] {
+    background-color: var(--color-danger);
+    color: var(--color-on-danger);
+  }
+}
+
+.exam-attempt__save-status {
+  color: var(--color-text-muted);
+  font-size: var(--type-body-sm-font-size);
+}
+
+.exam-attempt__summary {
+  color: var(--color-text-muted);
+  font-size: var(--type-body-sm-font-size);
+  margin-inline-start: auto;
+}
+
+.exam-attempt__banner {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+}
+
+.exam-attempt__navigator ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  padding-inline-start: 0;
+  margin: 0;
+}
+
+.exam-attempt__navigator button {
+  min-inline-size: 2.5rem;
+  min-block-size: 2.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.exam-attempt__nav-button--current {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-focus);
+}
+
+.exam-attempt__nav-button--answered {
+  background-color: var(--color-success);
+  color: var(--color-on-success);
+}
+
+.exam-attempt__nav-button--flagged {
+  border-color: var(--color-warning);
+}
+
+.exam-attempt__option {
+  display: block;
+  padding-block: var(--space-2);
+}
+
+.exam-attempt__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.exam-attempt__acknowledge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+}
+
+.exam-attempt--submitted {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: flex-start;
+  max-inline-size: 480px;
+  margin-inline: auto;
+  padding-block-start: var(--space-8);
+}

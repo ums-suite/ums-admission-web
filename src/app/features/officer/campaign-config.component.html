@@ -1,0 +1,212 @@
+<section class="campaign-config">
+  <h1>{{ 'officer.campaign.title' | translate }}</h1>
+
+  <ums-card variant="content" [title]="'officer.campaign.load.title' | translate">
+    <ums-form-field #loadIdField="umsFormField" [label]="'officer.campaign.load.label' | translate">
+      <ums-input
+        [id]="loadIdField.controlId()"
+        [value]="loadCampaignId()"
+        (valueChange)="loadCampaignId.set($event)"
+      />
+    </ums-form-field>
+    <ums-button type="button" variant="secondary" (click)="loadCampaign()">
+      {{ 'officer.campaign.load.action' | translate }}
+    </ums-button>
+    @if (loadError()) {
+      <p role="alert">{{ loadError() }}</p>
+    }
+  </ums-card>
+
+  @if (!campaign()) {
+    <ums-card variant="content" [title]="'officer.campaign.create.title' | translate">
+      <ums-form-field
+        #nameField="umsFormField"
+        [label]="'officer.campaign.create.name' | translate"
+      >
+        <ums-input [id]="nameField.controlId()" [value]="name()" (valueChange)="name.set($event)" />
+      </ums-form-field>
+      <ums-form-field
+        #programIdsField="umsFormField"
+        [label]="'officer.campaign.create.programIds' | translate"
+        [hint]="'officer.campaign.create.programIdsHint' | translate"
+      >
+        <ums-input
+          [id]="programIdsField.controlId()"
+          [value]="programIdsInput()"
+          (valueChange)="programIdsInput.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #startField="umsFormField"
+        [label]="'officer.campaign.create.windowStart' | translate"
+      >
+        <ums-input
+          [id]="startField.controlId()"
+          [value]="windowStart()"
+          placeholder="YYYY-MM-DD"
+          (valueChange)="windowStart.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #endField="umsFormField"
+        [label]="'officer.campaign.create.windowEnd' | translate"
+      >
+        <ums-input
+          [id]="endField.controlId()"
+          [value]="windowEnd()"
+          placeholder="YYYY-MM-DD"
+          (valueChange)="windowEnd.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #appFeeField="umsFormField"
+        [label]="'officer.campaign.create.applicationFeeType' | translate"
+      >
+        <ums-input
+          [id]="appFeeField.controlId()"
+          [value]="applicationFeeType()"
+          (valueChange)="applicationFeeType.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #confirmFeeField="umsFormField"
+        [label]="'officer.campaign.create.confirmationFeeType' | translate"
+      >
+        <ums-input
+          [id]="confirmFeeField.controlId()"
+          [value]="confirmationFeeType()"
+          (valueChange)="confirmationFeeType.set($event)"
+        />
+      </ums-form-field>
+
+      @if (createError()) {
+        <p role="alert">{{ createError() }}</p>
+      }
+
+      <ums-button type="button" [loading]="creating()" (click)="createCampaign()">
+        {{ 'officer.campaign.create.submit' | translate }}
+      </ums-button>
+    </ums-card>
+  }
+
+  @if (campaign(); as campaign) {
+    <ums-card variant="content" [title]="campaign.name" [subtitle]="campaign.id">
+      <p>
+        {{ 'officer.campaign.summary.window' | translate }}: {{ campaign.applicationWindowStart }} –
+        {{ campaign.applicationWindowEnd }}
+      </p>
+      <p>
+        {{ 'officer.campaign.summary.requiredDocuments' | translate }}:
+        @for (docType of campaign.requiredDocumentTypes; track docType) {
+          <ums-badge variant="neutral">{{ docType }}</ums-badge>
+        }
+      </p>
+    </ums-card>
+
+    <ums-card variant="content" [title]="'officer.campaign.eligibilityRule.title' | translate">
+      <ums-form-field
+        #ruleProgramField="umsFormField"
+        [label]="'officer.campaign.eligibilityRule.programId' | translate"
+      >
+        <ums-input
+          [id]="ruleProgramField.controlId()"
+          [value]="ruleProgramId()"
+          (valueChange)="ruleProgramId.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #ruleScoreField="umsFormField"
+        [label]="'officer.campaign.eligibilityRule.minimumScore' | translate"
+      >
+        <ums-input
+          [id]="ruleScoreField.controlId()"
+          type="number"
+          [value]="ruleMinimumScore()"
+          (valueChange)="ruleMinimumScore.set($event)"
+        />
+      </ums-form-field>
+      <label>
+        <input
+          type="checkbox"
+          [checked]="ruleIsGpaScale()"
+          (change)="ruleIsGpaScale.set(!ruleIsGpaScale())"
+        />
+        {{ 'officer.campaign.eligibilityRule.isGpaScale' | translate }}
+      </label>
+      <ums-form-field
+        #ruleBoardField="umsFormField"
+        [label]="'officer.campaign.eligibilityRule.requiredBoard' | translate"
+      >
+        <ums-input
+          [id]="ruleBoardField.controlId()"
+          [value]="ruleRequiredBoard()"
+          (valueChange)="ruleRequiredBoard.set($event)"
+        />
+      </ums-form-field>
+      <ums-button type="button" [loading]="submittingRule()" (click)="addEligibilityRule()">
+        {{ 'officer.campaign.eligibilityRule.submit' | translate }}
+      </ums-button>
+
+      @if (addedRules().length > 0) {
+        <ul>
+          @for (rule of addedRules(); track rule.programId) {
+            <li>
+              {{ rule.programId }} — {{ rule.minimumScore }} ({{ rule.isGpaScale ? 'GPA' : '%' }})
+            </li>
+          }
+        </ul>
+      }
+    </ums-card>
+
+    <ums-card variant="content" [title]="'officer.campaign.seatQuota.title' | translate">
+      <ums-form-field
+        #quotaProgramField="umsFormField"
+        [label]="'officer.campaign.seatQuota.programId' | translate"
+      >
+        <ums-input
+          [id]="quotaProgramField.controlId()"
+          [value]="quotaProgramId()"
+          (valueChange)="quotaProgramId.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #quotaField="umsFormField"
+        [label]="'officer.campaign.seatQuota.quota' | translate"
+      >
+        <ums-input
+          [id]="quotaField.controlId()"
+          type="number"
+          [value]="quotaAmount()"
+          (valueChange)="quotaAmount.set($event)"
+        />
+      </ums-form-field>
+      <ums-button type="button" [loading]="submittingQuota()" (click)="addSeatQuota()">
+        {{ 'officer.campaign.seatQuota.submit' | translate }}
+      </ums-button>
+
+      @if (addedQuotas().length > 0) {
+        <ul>
+          @for (quota of addedQuotas(); track quota.programId) {
+            <li>{{ quota.programId }} — {{ quota.quota }}</li>
+          }
+        </ul>
+      }
+    </ums-card>
+
+    <ums-card variant="content" [title]="'officer.campaign.requiredDocument.title' | translate">
+      <ums-form-field
+        #docTypeField="umsFormField"
+        [label]="'officer.campaign.requiredDocument.label' | translate"
+      >
+        <ums-input
+          [id]="docTypeField.controlId()"
+          [value]="documentType()"
+          (valueChange)="documentType.set($event)"
+        />
+      </ums-form-field>
+      <ums-button type="button" [loading]="submittingDocument()" (click)="addRequiredDocument()">
+        {{ 'officer.campaign.requiredDocument.submit' | translate }}
+      </ums-button>
+    </ums-card>
+  }
+</section>

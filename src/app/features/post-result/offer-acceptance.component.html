@@ -1,0 +1,65 @@
+@switch (state()) {
+  @case ('loading') {
+    <p>{{ 'postResult.offer.loading' | translate }}</p>
+  }
+  @case ('error') {
+    <p role="alert">{{ 'postResult.offer.error' | translate }}</p>
+  }
+  @case ('already-confirmed') {
+    <section class="offer-acceptance offer-acceptance--confirmed" role="status">
+      <h1>{{ 'postResult.offer.confirmed.title' | translate }}</h1>
+      <p>{{ 'postResult.offer.confirmed.body' | translate }}</p>
+      <ums-button type="button" (click)="goToDocuments()">
+        {{ 'postResult.offer.confirmed.action' | translate }}
+      </ums-button>
+    </section>
+  }
+  @case ('select-payment') {
+    <section class="offer-acceptance">
+      <h1>{{ 'postResult.offer.title' | translate }}</h1>
+      <p role="alert">{{ 'postResult.offer.deadlineNotice' | translate }}</p>
+
+      @if (invoice(); as invoice) {
+        <ums-card
+          variant="content"
+          [title]="'postResult.offer.amountTitle' | translate"
+          [statValue]="invoice.totalAmount + ' ' + invoice.currency"
+        />
+      }
+
+      @if (store.checking()) {
+        <p>{{ 'payment.method.loading' | translate }}</p>
+      } @else if (store.blocksNewAttempt()) {
+        <p role="status">{{ 'payment.method.attemptInProgress' | translate }}</p>
+      } @else {
+        <fieldset>
+          <legend>{{ 'postResult.offer.chooseMethod' | translate }}</legend>
+          @for (method of methods; track method) {
+            <label>
+              <input
+                type="radio"
+                name="confirmationPaymentMethod"
+                [checked]="selectedMethod() === method"
+                (change)="selectMethod(method)"
+              />
+              {{ method }}
+            </label>
+          }
+        </fieldset>
+
+        @if (errorMessage()) {
+          <p role="alert">{{ errorMessage() }}</p>
+        }
+
+        <ums-button
+          type="button"
+          [disabled]="!selectedMethod() || store.submitting()"
+          [loading]="store.submitting()"
+          (click)="onSubmit()"
+        >
+          {{ 'postResult.offer.submit' | translate }}
+        </ums-button>
+      }
+    </section>
+  }
+}

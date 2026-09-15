@@ -54,8 +54,22 @@ export const routes: Routes = [
       },
       {
         path: 'result',
-        loadComponent: placeholder,
-        data: { label: 'Result check' },
+        children: [
+          {
+            path: 'check',
+            loadComponent: () =>
+              import('./features/result/result-check.component').then(
+                (m) => m.ResultCheckComponent,
+              ),
+          },
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/result/result-lookup.component').then(
+                (m) => m.ResultLookupComponent,
+              ),
+          },
+        ],
       },
       {
         path: '',
@@ -100,17 +114,89 @@ export const routes: Routes = [
               ),
           },
           { path: 'admit-card', loadComponent: placeholder, data: { label: 'Admit card' } },
-          { path: 'exam', loadComponent: placeholder, data: { label: 'Admission test' } },
+          {
+            path: 'exam',
+            children: [
+              {
+                path: 'pretest/:applicationId',
+                loadComponent: () =>
+                  import('./features/exam/pretest.component').then((m) => m.PretestComponent),
+              },
+              {
+                path: 'attempt/:id',
+                loadComponent: () =>
+                  import('./features/exam/exam-attempt.component').then(
+                    (m) => m.ExamAttemptComponent,
+                  ),
+              },
+              { path: '', loadComponent: placeholder, data: { label: 'Admission test' } },
+            ],
+          },
           {
             path: 'post-result',
-            loadComponent: placeholder,
-            data: { label: 'Offer & enrollment' },
+            children: [
+              {
+                path: 'offer/:applicationId/confirming',
+                loadComponent: () =>
+                  import('./features/post-result/offer-acceptance-confirming.component').then(
+                    (m) => m.OfferAcceptanceConfirmingComponent,
+                  ),
+              },
+              {
+                path: 'offer/:applicationId',
+                loadComponent: () =>
+                  import('./features/post-result/offer-acceptance.component').then(
+                    (m) => m.OfferAcceptanceComponent,
+                  ),
+              },
+              {
+                path: 'documents/:applicationId',
+                loadComponent: () =>
+                  import('./features/post-result/document-verification.component').then(
+                    (m) => m.DocumentVerificationComponent,
+                  ),
+              },
+              {
+                path: 'enrollment/:applicationId',
+                loadComponent: () =>
+                  import('./features/post-result/enrollment-handoff.component').then(
+                    (m) => m.EnrollmentHandoffComponent,
+                  ),
+              },
+              {
+                path: '',
+                loadComponent: placeholder,
+                data: { label: 'Offer & enrollment' },
+              },
+            ],
           },
           {
             path: 'officer',
             canActivate: [officerGuard],
-            loadComponent: placeholder,
-            data: { label: 'Officer console' },
+            children: [
+              {
+                path: 'campaigns',
+                loadComponent: () =>
+                  import('./features/officer/campaign-config.component').then(
+                    (m) => m.CampaignConfigComponent,
+                  ),
+              },
+              {
+                path: 'tests/:campaignId',
+                loadComponent: () =>
+                  import('./features/officer/question-bank.component').then(
+                    (m) => m.QuestionBankComponent,
+                  ),
+              },
+              {
+                path: 'merit-lists/:campaignId',
+                loadComponent: () =>
+                  import('./features/officer/merit-list.component').then(
+                    (m) => m.MeritListComponent,
+                  ),
+              },
+              { path: '', loadComponent: placeholder, data: { label: 'Officer console' } },
+            ],
           },
         ],
       },

@@ -1,0 +1,257 @@
+@switch (state()) {
+  @case ('loading') {
+    <p>{{ 'exam.attempt.loading' | translate }}</p>
+  }
+  @case ('error') {
+    <p role="alert">{{ 'exam.attempt.error' | translate }}</p>
+  }
+  @default {
+    @if (store.submitPhase() === 'submitted') {
+      <section class="exam-attempt exam-attempt--submitted" role="status">
+        <h1>{{ 'exam.attempt.submitted.title' | translate }}</h1>
+        <p>{{ 'exam.attempt.submitted.body' | translate }}</p>
+        <ums-button type="button" (click)="goToDashboard()">
+          {{ 'exam.attempt.submitted.goToDashboard' | translate }}
+        </ums-button>
+      </section>
+    } @else {
+      <section class="exam-attempt">
+        <ums-offline-banner [message]="'exam.attempt.offlineMessage' | translate" />
+
+        <header class="exam-attempt__header">
+          <div
+            class="exam-attempt__timer"
+            role="timer"
+            [attr.data-tone]="tone()"
+            aria-label="{{ 'exam.attempt.timerLabel' | translate }}"
+          >
+            {{ timerLabel() }}
+          </div>
+          <p class="exam-attempt__save-status" role="status">
+            @switch (store.saveState()) {
+              @case ('saving') {
+                {{ 'exam.attempt.save.saving' | translate }}
+              }
+              @case ('retrying') {
+                {{ 'exam.attempt.save.retrying' | translate }}
+              }
+              @default {
+                @if (lastSavedLabel(); as label) {
+                  {{ label }}
+                }
+              }
+            }
+          </p>
+          <p class="ums-visually-hidden" aria-live="polite">{{ announcement() }}</p>
+          <p class="exam-attempt__summary">
+            {{
+              'exam.attempt.answeredSummary'
+                | translate
+                  : {
+                      answered: answeredCount(),
+                      unanswered: unansweredCount(),
+                      flagged: flaggedCount(),
+                    }
+            }}
+          </p>
+        </header>
+
+        @if (questionsLoadFailed()) {
+          <p class="exam-attempt__banner" role="alert">
+            {{ 'exam.attempt.questionsUnavailableBanner' | translate }}
+          </p>
+        }
+
+        <nav
+          class="exam-attempt__navigator"
+          [attr.aria-label]="'exam.attempt.navigatorLabel' | translate"
+        >
+          <ul>
+            @for (question of questions(); track question.id; let i = $index) {
+              <li>
+                <button
+                  type="button"
+                  [attr.aria-current]="i === currentIndex() ? 'true' : null"
+                  [attr.aria-label]="
+                    'exam.attempt.questionButtonLabel'
+                      | translate
+                        : {
+                            number: i + 1,
+                            status:
+                              (isAnswered(question.id)
+                                ? 'exam.attempt.status.answered'
+                                : 'exam.attempt.status.unanswered'
+                              ) | translate,
+                          }
+                  "
+                  [class.exam-attempt__nav-button--current]="i === currentIndex()"
+                  [class.exam-attempt__nav-button--answered]="isAnswered(question.id)"
+                  [class.exam-attempt__nav-button--flagged]="isFlagged(question.id)"
+                  (click)="goToQuestion(i)"
+                >
+                  {{ i + 1 }}
+                  @if (isFlagged(question.id)) {
+                    <ums-badge variant="warning" size="sm">{{
+                      'exam.attempt.flaggedBadge' | translate
+                    }}</ums-badge>
+                  }
+                </button>
+              </li>
+            }
+          </ul>
+        </nav>
+
+        @if (currentQuestion(); as question) {
+          <ums-card
+            variant="content"
+            [title]="
+              'exam.attempt.progress'
+                | translate: { current: currentIndex() + 1, total: totalCount() }
+            "
+          >
+            @if (!isContentAvailable(question.id)) {
+              <p role="alert">{{ 'exam.attempt.contentUnavailable' | translate }}</p>
+            } @else {
+              <p class="exam-attempt__question-text">{{ question.text }}</p>
+
+              @if (question.isSubjective) {
+                <label [attr.for]="'subjective-' + question.id">
+                  {{ 'exam.attempt.subjectiveLabel' | translate }}
+                </label>
+                <textarea
+                  [id]="'subjective-' + question.id"
+                  [value]="subjectiveText(question.id)"
+                  [placeholder]="'exam.attempt.subjectivePlaceholder' | translate"
+                  (input)="onSubjectiveInput(question.id, $any($event.target).value)"
+                  (blur)="onSubjectiveBlur(question.id, $any($event.target).value)"
+                ></textarea>
+              } @else {
+                <fieldset>
+                  <legend>{{ 'exam.attempt.optionsLegend' | translate }}</legend>
+                  @for (option of question.options; track $index; let optionIndex = $index) {
+                    <label class="exam-attempt__option">
+                      <input
+                        type="radio"
+                        [name]="'question-' + question.id"
+                        [checked]="selectedOptionIndex(question.id) === optionIndex"
+                        (change)="selectOption(question.id, optionIndex)"
+                      />
+                      {{ option }}
+                    </label>
+                  }
+                </fieldset>
+              }
+            }
+
+            <ums-button type="button" variant="secondary" (click)="toggleFlag()">
+              {{
+                (isFlagged(question.id) ? 'exam.attempt.unflag' : 'exam.attempt.flag') | translate
+              }}
+            </ums-button>
+          </ums-card>
+        }
+
+        <div class="exam-attempt__actions">
+          <ums-button
+            type="button"
+            variant="secondary"
+            [disabled]="currentIndex() === 0"
+            (click)="goToPrevious()"
+          >
+            {{ 'exam.attempt.previous' | translate }}
+          </ums-button>
+          <ums-button
+            type="button"
+            variant="secondary"
+            [disabled]="currentIndex() >= totalCount() - 1"
+            (click)="goToNext()"
+          >
+            {{ 'exam.attempt.next' | translate }}
+          </ums-button>
+          <ums-button
+            type="button"
+            variant="danger"
+            [disabled]="store.submitPhase() !== 'idle'"
+            (click)="openConfirmSubmit()"
+          >
+            {{ 'exam.attempt.submitButton' | translate }}
+          </ums-button>
+        </div>
+
+        @switch (store.submitPhase()) {
+          @case ('waiting-for-saves') {
+            <p class="exam-attempt__banner" role="status">
+              {{ 'exam.attempt.waitingForSaves' | translate }}
+            </p>
+          }
+          @case ('submitting') {
+            <p class="exam-attempt__banner" role="status">
+              {{ 'exam.attempt.submitting' | translate }}
+            </p>
+          }
+          @case ('retrying') {
+            <p class="exam-attempt__banner" role="status">
+              {{ 'exam.attempt.retryingSubmit' | translate }}
+            </p>
+          }
+        }
+
+        <ums-modal
+          [open]="confirmSubmitOpen()"
+          [title]="'exam.attempt.confirmSubmit.title' | translate"
+          (closed)="onConfirmSubmitClosed()"
+        >
+          <p>
+            {{
+              'exam.attempt.confirmSubmit.body'
+                | translate: { answered: answeredCount(), total: totalCount() }
+            }}
+          </p>
+          @if (unansweredCount() > 0) {
+            <p role="alert">
+              {{
+                'exam.attempt.confirmSubmit.unansweredWarning'
+                  | translate: { unanswered: unansweredCount() }
+              }}
+            </p>
+          }
+          <label class="exam-attempt__acknowledge">
+            <input
+              type="checkbox"
+              [checked]="confirmAcknowledged()"
+              (change)="confirmAcknowledged.set(!confirmAcknowledged())"
+            />
+            {{ 'exam.attempt.confirmSubmit.acknowledge' | translate }}
+          </label>
+          <div umsModalFooter>
+            <ums-button type="button" variant="secondary" (click)="onConfirmSubmitClosed()">
+              {{ 'exam.attempt.confirmSubmit.cancel' | translate }}
+            </ums-button>
+            <ums-button
+              type="button"
+              variant="danger"
+              [disabled]="!confirmAcknowledged()"
+              (click)="confirmManualSubmit()"
+            >
+              {{ 'exam.attempt.confirmSubmit.confirm' | translate }}
+            </ums-button>
+          </div>
+        </ums-modal>
+
+        <ums-modal
+          [open]="store.hasSessionConflict()"
+          [title]="'exam.attempt.sessionConflict.title' | translate"
+          [closeOnBackdropClick]="false"
+          [closeOnEscape]="false"
+        >
+          <p role="alert">{{ 'exam.attempt.sessionConflict.body' | translate }}</p>
+          <div umsModalFooter>
+            <ums-button type="button" (click)="goToDashboard()">
+              {{ 'exam.attempt.sessionConflict.goToDashboard' | translate }}
+            </ums-button>
+          </div>
+        </ums-modal>
+      </section>
+    }
+  }
+}

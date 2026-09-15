@@ -1,0 +1,63 @@
+@switch (state()) {
+  @case ('loading') {
+    <p>{{ 'exam.pretest.loading' | translate }}</p>
+  }
+  @case ('error') {
+    <p role="alert">{{ errorMessage() || ('exam.pretest.error' | translate) }}</p>
+  }
+  @case ('already-started-unresolvable') {
+    <p role="alert">{{ 'exam.pretest.alreadyStartedUnresolvable' | translate }}</p>
+  }
+  @default {
+    <section class="pretest">
+      <h1>{{ 'exam.pretest.title' | translate }}</h1>
+
+      @if (testSlotId(); as slot) {
+        <p>{{ 'exam.pretest.slot' | translate: { slot } }}</p>
+      }
+
+      <ums-card variant="content" [title]="'exam.pretest.rules.title' | translate">
+        <ul>
+          <li>{{ 'exam.pretest.rules.oneAttempt' | translate }}</li>
+          <li>{{ 'exam.pretest.rules.autoSubmit' | translate }}</li>
+          <li>{{ 'exam.pretest.rules.noReopen' | translate }}</li>
+          <li>{{ 'exam.pretest.rules.stayConnected' | translate }}</li>
+        </ul>
+        <label>
+          <input
+            type="checkbox"
+            [checked]="rulesAcknowledged()"
+            (change)="rulesAcknowledged.set(!rulesAcknowledged())"
+          />
+          {{ 'exam.pretest.rules.acknowledge' | translate }}
+        </label>
+      </ums-card>
+
+      <ums-card variant="content" [title]="'exam.pretest.deviceCheck.title' | translate">
+        <p [attr.role]="isOnline() ? null : 'alert'">
+          {{
+            (isOnline() ? 'exam.pretest.deviceCheck.online' : 'exam.pretest.deviceCheck.offline')
+              | translate
+          }}
+        </p>
+        <label>
+          <input
+            type="checkbox"
+            [checked]="deviceCheckAcknowledged()"
+            (change)="deviceCheckAcknowledged.set(!deviceCheckAcknowledged())"
+          />
+          {{ 'exam.pretest.deviceCheck.acknowledge' | translate }}
+        </label>
+      </ums-card>
+
+      <ums-button
+        type="button"
+        [disabled]="!canBegin()"
+        [loading]="state() === 'starting'"
+        (click)="begin()"
+      >
+        {{ 'exam.pretest.begin' | translate }}
+      </ums-button>
+    </section>
+  }
+}

@@ -1,7 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute, Router, convertToParamMap, provideRouter } from '@angular/router';
 import { APP_CONFIG } from '../../core/config/app-config';
 import { AdmitCardComponent } from './admit-card.component';
 
@@ -17,6 +17,7 @@ describe('AdmitCardComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
+        provideRouter([]),
         { provide: APP_CONFIG, useValue: { apiBaseUrl: baseUrl } },
         {
           provide: ActivatedRoute,
@@ -90,5 +91,19 @@ describe('AdmitCardComponent', () => {
       '_blank',
       'noopener',
     );
+  });
+
+  it('navigates to the AWEB-21 pre-test screen for this application when beginning the exam', () => {
+    fixture.detectChanges();
+    httpMock
+      .expectOne(`${baseUrl}/api/v1/admission/tests/admit-card/app-1`)
+      .flush({ admitCardDocumentId: 'doc-1' });
+    httpMock.expectOne(`${baseUrl}/api/v1/documents/doc-1`).flush({ id: 'doc-1', status: 'Ready' });
+
+    const router = TestBed.inject(Router);
+    const navigateSpy = spyOn(router, 'navigate');
+    fixture.componentInstance['beginExam']();
+
+    expect(navigateSpy).toHaveBeenCalledWith(['/app/exam/pretest', 'app-1']);
   });
 });

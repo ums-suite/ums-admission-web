@@ -1,0 +1,101 @@
+@switch (state()) {
+  @case ('loading') {
+    <p>{{ 'officer.meritList.loading' | translate }}</p>
+  }
+  @case ('error') {
+    <p role="alert">{{ 'officer.meritList.serverError' | translate }}</p>
+  }
+  @case ('not-found') {
+    <section class="merit-list merit-list--not-found">
+      <h1>{{ 'officer.meritList.title' | translate }}</h1>
+      <p>{{ 'officer.meritList.notFound' | translate }}</p>
+      <ums-button type="button" [loading]="generating()" (click)="generate()">
+        {{ 'officer.meritList.generate' | translate }}
+      </ums-button>
+      @if (errorMessage()) {
+        <p role="alert">{{ errorMessage() }}</p>
+      }
+    </section>
+  }
+  @case ('ready') {
+    @if (meritList(); as meritList) {
+      <section class="merit-list">
+        <h1>{{ 'officer.meritList.title' | translate }}</h1>
+        <p>
+          {{ 'officer.meritList.status' | translate }}:
+          <ums-badge [variant]="meritList.status === 'Approved' ? 'success' : 'neutral'">{{
+            meritList.status
+          }}</ums-badge>
+        </p>
+
+        <h2>{{ 'officer.meritList.entries' | translate }}</h2>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">{{ 'officer.meritList.entry.rank' | translate }}</th>
+              <th scope="col">Application</th>
+              <th scope="col">Program</th>
+              <th scope="col">Score</th>
+              <th scope="col">{{ 'officer.meritList.entry.outcome' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (entry of meritList.entries; track entry.applicationId) {
+              <tr>
+                <td>{{ entry.rank }}</td>
+                <td>{{ entry.applicationId }}</td>
+                <td>{{ entry.programId }}</td>
+                <td>{{ entry.score }}</td>
+                <td>
+                  <ums-badge [variant]="badgeVariant(entry.outcome)">{{ entry.outcome }}</ums-badge>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        @if (meritList.status === 'Approved') {
+          <p role="status">{{ 'officer.meritList.approved' | translate }}</p>
+        } @else {
+          <ums-button type="button" variant="danger" (click)="openConfirmApprove()">
+            {{ 'officer.meritList.approve' | translate }}
+          </ums-button>
+        }
+
+        @if (errorMessage()) {
+          <p role="alert">{{ errorMessage() }}</p>
+        }
+
+        <ums-modal
+          [open]="confirmApproveOpen()"
+          [title]="'officer.meritList.approve' | translate"
+          (closed)="onConfirmApproveClosed()"
+        >
+          <p role="alert">{{ 'officer.meritList.approveWarning' | translate }}</p>
+          <label>
+            <input
+              type="checkbox"
+              [checked]="confirmAcknowledged()"
+              (change)="confirmAcknowledged.set(!confirmAcknowledged())"
+            />
+            {{ 'officer.meritList.acknowledgeApproval' | translate }}
+          </label>
+          <div umsModalFooter>
+            <ums-button type="button" variant="secondary" (click)="onConfirmApproveClosed()">
+              {{ 'officer.meritList.cancel' | translate }}
+            </ums-button>
+            <ums-button
+              type="button"
+              variant="danger"
+              [disabled]="!confirmAcknowledged()"
+              [loading]="approving()"
+              (click)="confirmApprove()"
+            >
+              {{ 'officer.meritList.approve' | translate }}
+            </ums-button>
+          </div>
+        </ums-modal>
+      </section>
+    }
+  }
+}

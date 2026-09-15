@@ -1,0 +1,38 @@
+@switch (state()) {
+  @case ('loading') {
+    <p>{{ 'postResult.documents.loading' | translate }}</p>
+  }
+  @case ('error') {
+    <p role="alert">{{ 'postResult.documents.error' | translate }}</p>
+  }
+  @case ('ready') {
+    <section class="document-verification">
+      <h1>{{ 'postResult.documents.title' | translate }}</h1>
+      <p>
+        {{
+          'postResult.documents.summary'
+            | translate: { approved: approvedCount(), total: totalCount() }
+        }}
+      </p>
+
+      @if (totalCount() === 0) {
+        <p>{{ 'postResult.documents.none' | translate }}</p>
+      } @else {
+        <ul class="document-verification__list">
+          @for (document of documents(); track document.id) {
+            <li>
+              <ums-card variant="content" [title]="document.documentType">
+                <ums-badge [variant]="badgeVariant(document.status)">{{
+                  'postResult.documents.status.' + document.status | translate
+                }}</ums-badge>
+                @if (document.status === 'Rejected' && document.rejectionReason) {
+                  <p role="alert">{{ document.rejectionReason }}</p>
+                }
+              </ums-card>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+  }
+}

@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import type { HttpResponse } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { ProvisionalModuleApiBase } from '../http/provisional-module-api.base';
-import type { AnswerInput, ExamAttemptDto, ServerTimedResponse } from './exam-attempt.types';
+import type {
+  AnswerInput,
+  ExamAttemptDto,
+  ExamQuestionDto,
+  ServerTimedResponse,
+} from './exam-attempt.types';
 
 /**
  * Interim client for `Admission`'s exam-attempt endpoints (AWEB-9) -- see this app's README
@@ -56,6 +61,20 @@ export class ExamAttemptApi extends ProvisionalModuleApiBase {
           subjectiveText: input.subjectiveText,
         })
         .pipe(map(() => undefined)),
+    );
+  }
+
+  /**
+   * `GET /api/v1/admission/exams/attempts/{id}/questions` -- **unverified, most likely does not
+   * exist yet against real `ums-core`**; see `exam-attempt.types.ts`'s `ExamQuestionDto` class doc
+   * for the full blocking-gap writeup. Kept as a real, tested method (not a TODO stub) so wiring in
+   * the actual endpoint the moment `Admission` ships one is a one-line path change.
+   */
+  getAttemptQuestions(attemptId: string): Observable<readonly ExamQuestionDto[]> {
+    return this.normalizeErrors(
+      this.http.get<readonly ExamQuestionDto[]>(
+        this.apiUrl(`admission/exams/attempts/${attemptId}/questions`),
+      ),
     );
   }
 

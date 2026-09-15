@@ -155,6 +155,35 @@ describe('PaymentAttemptStore', () => {
     });
   });
 
+  describe('initiateConfirmationPayment (AWEB-29, same idempotent-submission shape)', () => {
+    it('disables further submission while one is already in flight', () => {
+      store.initiateConfirmationPayment('app-1', 'invoice-2', 'bKash', () => undefined);
+      expect(store.submitting()).toBeTrue();
+
+      store.initiateConfirmationPayment('app-1', 'invoice-2', 'bKash', () => undefined);
+
+      httpMock.expectOne(`${baseUrl}/api/v1/admission/applications/app-1/confirmation-payment`);
+    });
+
+    it('re-enables submission and calls onRedirect once the response carries a redirectUrl', () => {
+      let redirectedTo: string | null = null;
+      store.initiateConfirmationPayment('app-1', 'invoice-2', 'bKash', (url) => {
+        redirectedTo = url;
+      });
+
+      httpMock
+        .expectOne(`${baseUrl}/api/v1/admission/applications/app-1/confirmation-payment`)
+        .flush({
+          payment: { id: 'payment-3', invoiceId: 'invoice-2', status: 'Initiated' },
+          redirectUrl: 'https://gateway.example/pay',
+        });
+
+      expect(store.submitting()).toBeFalse();
+      expect(redirectedTo as string | null).toBe('https://gateway.example/pay');
+      expect(localStorage.getItem('ums-admission-web:payment-attempt:invoice-2')).toBe('payment-3');
+    });
+  });
+
   describe('refreshStatus', () => {
     it('updates the held payment and invokes the callback with the latest status', () => {
       let latestStatus: string | null = null;

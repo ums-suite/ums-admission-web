@@ -51,6 +51,33 @@ export interface ApplicationDto {
   readonly admitCardDocumentId?: string;
 }
 
+/**
+ * `POST /api/v1/admission/applications/{id}/confirm` (AWEB-29) -- verified directly against
+ * `ums-core` source (`ApplicationEndpoints.cs`, `ApplicationService.ConfirmAsync`): own-Application
+ * only, requires `Application.Status == Locked`. Lazily creates the confirmation-fee `Invoice` on
+ * first call (`confirmationFeeInvoiceId` is populated from that point on, mirroring
+ * `applicationFeeInvoiceId`'s own already-established shape) -- idempotent by construction
+ * (`OriginatingApplicationId` keys the `Student` record creation this same call eventually
+ * triggers), so calling it again after paying is always safe, never a double-charge or duplicate
+ * `Student` record.
+ *
+ * **Confirmed gap**: there is no deadline field anywhere on this response or on `ApplicationDto`
+ * -- requirement-spec.md §3.7's "deadline prominently and persistently displayed" therefore has no
+ * backend data source today, exactly the same class of gap already documented for
+ * `AdmissionTestDto`'s missing test-slot start time (`admission-test.types.ts`). Flagged in the PR
+ * rather than inventing a fake date; AWEB-29's screen instead shows a persistent, prominent
+ * (but date-free) urgency notice.
+ *
+ * **Confirmed gap**: the created `Student` record's id/summary is never surfaced back through this
+ * response (`ApplicationService.ConfirmAsync` discards `IStudentRecordProvisioner.CreateAsync`'s
+ * result entirely) -- see AWEB-31's enrollment-handoff screen for how this is worked around.
+ */
+export interface ConfirmationAttemptResult {
+  readonly application: ApplicationDto;
+  readonly confirmationFeeInvoiceId?: string;
+  readonly confirmed: boolean;
+}
+
 export interface CreateApplicationRequest {
   readonly campaignId: string;
 }
@@ -93,6 +120,47 @@ export interface CampaignEligibilityRuleDto {
   readonly minimumScore: number;
   readonly isGpaScale: boolean;
   readonly requiredBoard?: string;
+}
+
+/**
+ * Officer-facing campaign configuration write shapes (AWEB-32, requirement-spec.md §3.8) --
+ * verified directly against `ums-core` source (`CampaignEndpoints.cs`, `CampaignService.cs`,
+ * `EligibilityRule.cs`). All four gated behind `admission.campaign.manage`.
+ *
+ * **Confirmed gaps, flagged in the PR**: no `GET /campaigns` list endpoint exists (an officer
+ * must already know/remember a campaign's id -- this app's own `CampaignConfigComponent` works
+ * around it the same way `WizardDraftStore` already does for applicants, by remembering a
+ * just-created campaign's id locally), and no `PUT`/`PATCH` update or delete endpoint of any kind
+ * exists for a campaign, its eligibility rules, or its seat quotas -- every one of the four
+ * write endpoints below is additive-only. Every write endpoint's own response shape is
+ * **unconfirmed** (the research pass backing this confirmed the routes/permissions/request bodies
+ * but not what each actually returns) -- assumed to return the updated `CampaignDto`, mirroring
+ * this module's other write endpoints' own established convention (e.g. `setProgramChoices`),
+ * flagged in `officer-campaign.api.ts` as unverified pending confirmation.
+ */
+export interface CreateCampaignRequest {
+  readonly name: string;
+  readonly programIds: readonly string[];
+  readonly applicationWindowStart: string;
+  readonly applicationWindowEnd: string;
+  readonly applicationFeeType: string;
+  readonly confirmationFeeType: string;
+}
+
+export interface EligibilityRuleRequest {
+  readonly programId: string;
+  readonly minimumScore: number;
+  readonly isGpaScale: boolean;
+  readonly requiredBoard?: string;
+}
+
+export interface SeatQuotaRequest {
+  readonly programId: string;
+  readonly quota: number;
+}
+
+export interface RequiredDocumentTypeRequest {
+  readonly documentType: string;
 }
 
 export interface AcademicRecordRequest {

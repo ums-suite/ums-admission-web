@@ -1,0 +1,92 @@
+@switch (effectiveState()) {
+  @case ('checking') {
+    <section class="result-check result-check--checking" role="status" aria-live="polite">
+      <div class="result-check__spinner" aria-hidden="true"></div>
+      <h1>{{ 'result.check.checking.title' | translate }}</h1>
+      <p>{{ 'result.check.checking.body' | translate }}</p>
+    </section>
+  }
+  @case ('queued') {
+    <section class="result-check result-check--queued" role="status" aria-live="polite">
+      <div class="result-check__spinner" aria-hidden="true"></div>
+      <h1>{{ 'result.check.queued.title' | translate }}</h1>
+      <p>{{ 'result.check.queued.body' | translate }}</p>
+      @if (queueInfo(); as queue) {
+        @if (queue.queuePosition !== undefined) {
+          <p>{{ 'result.check.queued.position' | translate: { position: queue.queuePosition } }}</p>
+        }
+        @if (queue.estimatedWaitSeconds !== undefined) {
+          <p>
+            {{
+              'result.check.queued.estimatedWait'
+                | translate: { seconds: queue.estimatedWaitSeconds }
+            }}
+          </p>
+        }
+      }
+      @if (isFollower()) {
+        <p>{{ 'result.check.followerNotice' | translate }}</p>
+      }
+    </section>
+  }
+  @case ('not-published') {
+    <section class="result-check result-check--not-published" role="status">
+      <h1>{{ 'result.check.notPublished.title' | translate }}</h1>
+      <p>{{ 'result.check.notPublished.body' | translate }}</p>
+      @if (!isFollower()) {
+        <ums-button type="button" (click)="checkAgain()">
+          {{ 'result.check.checkAgain' | translate }}
+        </ums-button>
+      }
+    </section>
+  }
+  @case ('error') {
+    <section class="result-check result-check--error" role="alert">
+      <h1>{{ 'result.check.error.title' | translate }}</h1>
+      <p>{{ 'result.check.error.body' | translate }}</p>
+      <ums-button type="button" variant="secondary" (click)="backToLookup()">
+        {{ 'result.check.error.action' | translate }}
+      </ums-button>
+    </section>
+  }
+  @case ('published') {
+    @if (effectiveResult(); as result) {
+      <section class="result-check result-check--reveal" role="status">
+        @switch (result.outcome) {
+          @case ('Admitted') {
+            <article class="result-check__outcome result-check__outcome--admitted">
+              <h1>{{ 'result.reveal.admitted.title' | translate }}</h1>
+              <p>{{ 'result.reveal.admitted.body' | translate }}</p>
+              @if (result.meritRank !== undefined) {
+                <p>{{ 'result.reveal.meritRank' | translate: { rank: result.meritRank } }}</p>
+              }
+              <p>{{ 'result.reveal.admitted.nextSteps' | translate }}</p>
+              <ums-button type="button" (click)="continueToPostResult()">
+                {{ 'result.reveal.admitted.action' | translate }}
+              </ums-button>
+            </article>
+          }
+          @case ('Waitlisted') {
+            <article class="result-check__outcome result-check__outcome--waitlisted">
+              <h1>{{ 'result.reveal.waitlisted.title' | translate }}</h1>
+              <p>{{ 'result.reveal.waitlisted.body' | translate }}</p>
+              @if (result.waitlistRank !== undefined) {
+                <p>
+                  {{ 'result.reveal.waitlistRank' | translate: { rank: result.waitlistRank } }}
+                </p>
+              }
+              <p>{{ 'result.reveal.waitlisted.nextSteps' | translate }}</p>
+            </article>
+          }
+          @case ('Rejected') {
+            <article class="result-check__outcome result-check__outcome--not-admitted">
+              <h1>{{ 'result.reveal.notAdmitted.title' | translate }}</h1>
+              <p>{{ 'result.reveal.notAdmitted.body' | translate }}</p>
+              <p>{{ 'result.reveal.notAdmitted.nextSteps' | translate }}</p>
+            </article>
+          }
+        }
+      </section>
+    }
+  }
+}

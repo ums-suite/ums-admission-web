@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UmsButtonComponent, UmsCardComponent } from '@ums/design-system';
 import { TranslatePipe } from '../../core/i18n/translate.pipe';
 import { AdmitCardApi } from './admit-card.api';
@@ -19,6 +19,11 @@ type AdmitCardScreenState =
  * `digitalVerificationId` as a plain verification code rather than rendering an actual QR image --
  * no QR-rendering library exists yet in this app and adding one is a small, separable follow-up
  * (flagged in the PR) rather than blocking this ticket on a new dependency decision.
+ *
+ * **AWEB-22 entry point**: the 'ready' state links into the pre-test screen (AWEB-21,
+ * `/app/exam/pretest/:applicationId`) -- the admit card being downloadable is this app's natural
+ * signal that the test slot/fee prerequisites are met, so it is the most sensible place to launch
+ * the exam funnel from (there is no dashboard screen yet for a more central launch point).
  */
 @Component({
   selector: 'app-admit-card',
@@ -28,9 +33,11 @@ type AdmitCardScreenState =
 })
 export class AdmitCardComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly admitCardApi = inject(AdmitCardApi);
 
   protected readonly state = signal<AdmitCardScreenState>('loading');
+  protected readonly applicationId = signal<string | null>(null);
   protected readonly rollNumber = signal<string | null>(null);
   protected readonly assignedTestSlotId = signal<string | null>(null);
   protected readonly document = signal<GeneratedDocumentDto | null>(null);
@@ -41,6 +48,7 @@ export class AdmitCardComponent implements OnInit {
       this.state.set('error');
       return;
     }
+    this.applicationId.set(applicationId);
 
     this.admitCardApi.getAvailability(applicationId).subscribe({
       next: (availability) => {
@@ -67,6 +75,13 @@ export class AdmitCardComponent implements OnInit {
   /** Isolated for testability -- opens the pre-signed direct-to-object-storage URL in a new tab, never proxied through this app. */
   protected openDownload(url: string): void {
     window.open(url, '_blank', 'noopener');
+  }
+
+  protected beginExam(): void {
+    const applicationId = this.applicationId();
+    if (applicationId) {
+      void this.router.navigate(['/app/exam/pretest', applicationId]);
+    }
   }
 
   private stateForDocument(document: GeneratedDocumentDto): AdmitCardScreenState {

@@ -92,4 +92,11 @@ describe('ApplicationApi', () => {
     expect(req.request.method).toBe('POST');
     req.flush(null);
   });
+
+  it('confirms an application (seat confirmation) at POST /api/v1/admission/applications/{id}/confirm', () => {
+    api.confirmApplication('app-1').subscribe();
+    const req = httpMock.expectOne(`${baseUrl}/api/v1/admission/applications/app-1/confirm`);
+    expect(req.request.method).toBe('POST');
+    req.flush({ application: { id: 'app-1', status: 'Locked' }, confirmed: false });
+  });
 });
