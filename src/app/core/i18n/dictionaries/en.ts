@@ -184,4 +184,76 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
   'admitCard.verificationId': 'Verification code',
   'admitCard.download': 'Download admit card',
   'admitCard.error': 'We could not load your admit card. Please try again later.',
+  'admitCard.beginExam': 'Begin your admission test',
+
+  'exam.pretest.loading': 'Loading your test details…',
+  'exam.pretest.error': 'We could not load your test details. Please try again later.',
+  'exam.pretest.alreadyStartedUnresolvable':
+    'It looks like you already started this attempt on a different device or browser. Please return to the device you started on to continue.',
+  'exam.pretest.title': 'Before you begin',
+  'exam.pretest.slot': 'Your assigned test slot: {{slot}}',
+  'exam.pretest.rules.title': 'Please read carefully',
+  'exam.pretest.rules.oneAttempt': 'You get exactly one attempt at this test.',
+  'exam.pretest.rules.autoSubmit':
+    'Your answers are submitted automatically the instant time runs out -- no further input is accepted after that.',
+  'exam.pretest.rules.noReopen': 'Once submitted, your attempt cannot be reopened or changed.',
+  'exam.pretest.rules.stayConnected':
+    'Stay connected if you can. If you lose connection, keep answering -- your selections are kept and saved the moment you are back online.',
+  'exam.pretest.rules.acknowledge': 'I have read and understood these rules.',
+  'exam.pretest.deviceCheck.title': 'Device check',
+  'exam.pretest.deviceCheck.online': 'Your device is online and ready.',
+  'exam.pretest.deviceCheck.offline':
+    'Your device appears to be offline. Please reconnect before beginning.',
+  'exam.pretest.deviceCheck.acknowledge': "I've checked my device and connection.",
+  'exam.pretest.begin': 'Begin exam',
+
+  'exam.attempt.loading': 'Loading your exam…',
+  'exam.attempt.error': 'We could not load your exam. Please contact support.',
+  'exam.attempt.questionsUnavailableBanner':
+    'We could not load some of your question content just now. Your timer and previously saved answers are not affected -- please contact support if this does not resolve itself shortly.',
+  'exam.attempt.timerLabel': 'Time remaining',
+  'exam.attempt.save.saving': 'Saving…',
+  'exam.attempt.save.retrying': 'Saving your last answer…',
+  'exam.attempt.save.justNow': 'Saved just now',
+  'exam.attempt.save.secondsAgo': 'Saved {{seconds}}s ago',
+  'exam.attempt.answeredSummary':
+    '{{answered}} answered, {{unanswered}} remaining, {{flagged}} flagged for review',
+  'exam.attempt.navigatorLabel': 'Question navigator',
+  'exam.attempt.questionButtonLabel': 'Question {{number}}, {{status}}',
+  'exam.attempt.status.answered': 'answered',
+  'exam.attempt.status.unanswered': 'not answered',
+  'exam.attempt.flaggedBadge': 'Flagged',
+  'exam.attempt.progress': 'Question {{current}} of {{total}}',
+  'exam.attempt.contentUnavailable':
+    "This question's content could not be loaded. Your progress on other questions and your timer are not affected.",
+  'exam.attempt.optionsLegend': 'Choose one answer',
+  'exam.attempt.subjectiveLabel': 'Your answer',
+  'exam.attempt.subjectivePlaceholder': 'Type your answer here…',
+  'exam.attempt.flag': 'Flag for review',
+  'exam.attempt.unflag': 'Remove flag',
+  'exam.attempt.previous': 'Previous',
+  'exam.attempt.next': 'Next',
+  'exam.attempt.submitButton': 'Submit exam',
+  'exam.attempt.waitingForSaves': 'Saving your last answer…',
+  'exam.attempt.submitting': 'Submitting your exam…',
+  'exam.attempt.retryingSubmit': 'Still submitting -- please stay on this page…',
+  'exam.attempt.offlineMessage':
+    "You're offline. Your answers are kept and will be saved automatically the moment you're back online.",
+  'exam.attempt.confirmSubmit.title': 'Submit your exam?',
+  'exam.attempt.confirmSubmit.body':
+    'You have answered {{answered}} of {{total}} questions. Once submitted, your attempt is final and cannot be changed.',
+  'exam.attempt.confirmSubmit.unansweredWarning':
+    'You still have {{unanswered}} unanswered question(s). You can go back and answer them before submitting.',
+  'exam.attempt.confirmSubmit.acknowledge':
+    'I understand this is final and I cannot change my answers afterward.',
+  'exam.attempt.confirmSubmit.cancel': 'Go back',
+  'exam.attempt.confirmSubmit.confirm': 'Yes, submit my exam',
+  'exam.attempt.sessionConflict.title': 'This exam is already open elsewhere',
+  'exam.attempt.sessionConflict.body':
+    'This exam attempt is already in progress in another tab or window on this device. To avoid losing or conflicting answers, please continue there and close this tab.',
+  'exam.attempt.sessionConflict.goToDashboard': 'Go to dashboard',
+  'exam.attempt.submitted.title': 'Your exam has been submitted',
+  'exam.attempt.submitted.body':
+    'Your answers have been received and your attempt is now locked. You will be notified once results are published.',
+  'exam.attempt.submitted.goToDashboard': 'Return to dashboard',
 };

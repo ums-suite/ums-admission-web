@@ -184,4 +184,76 @@ export const BN_TRANSLATIONS: TranslationDictionary = {
   'admitCard.verificationId': 'যাচাইকরণ কোড',
   'admitCard.download': 'প্রবেশপত্র ডাউনলোড করুন',
   'admitCard.error': 'আপনার প্রবেশপত্র লোড করা যায়নি। পরে আবার চেষ্টা করুন।',
+  'admitCard.beginExam': 'আপনার ভর্তি পরীক্ষা শুরু করুন',
+
+  'exam.pretest.loading': 'আপনার পরীক্ষার তথ্য লোড হচ্ছে…',
+  'exam.pretest.error': 'আপনার পরীক্ষার তথ্য লোড করা যায়নি। পরে আবার চেষ্টা করুন।',
+  'exam.pretest.alreadyStartedUnresolvable':
+    'মনে হচ্ছে আপনি ইতিমধ্যে অন্য একটি ডিভাইস বা ব্রাউজারে এই পরীক্ষা শুরু করেছেন। চালিয়ে যেতে অনুগ্রহ করে সেই ডিভাইসে ফিরে যান।',
+  'exam.pretest.title': 'শুরু করার আগে',
+  'exam.pretest.slot': 'আপনার নির্ধারিত পরীক্ষার স্লট: {{slot}}',
+  'exam.pretest.rules.title': 'অনুগ্রহ করে মনোযোগ সহকারে পড়ুন',
+  'exam.pretest.rules.oneAttempt': 'আপনি এই পরীক্ষার জন্য ঠিক একটি সুযোগ পাবেন।',
+  'exam.pretest.rules.autoSubmit':
+    'সময় শেষ হওয়ার সাথে সাথেই আপনার উত্তর স্বয়ংক্রিয়ভাবে জমা হয়ে যাবে — এর পরে আর কোনো ইনপুট গ্রহণ করা হবে না।',
+  'exam.pretest.rules.noReopen': 'একবার জমা দিলে, আপনার পরীক্ষা আর খোলা বা পরিবর্তন করা যাবে না।',
+  'exam.pretest.rules.stayConnected':
+    'সম্ভব হলে সংযুক্ত থাকুন। সংযোগ বিচ্ছিন্ন হলে, উত্তর দিতে থাকুন — আপনার নির্বাচনগুলো সংরক্ষিত থাকবে এবং সংযোগ ফিরলেই সেভ হয়ে যাবে।',
+  'exam.pretest.rules.acknowledge': 'আমি এই নিয়মগুলো পড়েছি এবং বুঝেছি।',
+  'exam.pretest.deviceCheck.title': 'ডিভাইস পরীক্ষা',
+  'exam.pretest.deviceCheck.online': 'আপনার ডিভাইস অনলাইনে আছে এবং প্রস্তুত।',
+  'exam.pretest.deviceCheck.offline':
+    'আপনার ডিভাইস অফলাইনে আছে বলে মনে হচ্ছে। শুরু করার আগে অনুগ্রহ করে পুনরায় সংযুক্ত হন।',
+  'exam.pretest.deviceCheck.acknowledge': 'আমি আমার ডিভাইস ও সংযোগ পরীক্ষা করেছি।',
+  'exam.pretest.begin': 'পরীক্ষা শুরু করুন',
+
+  'exam.attempt.loading': 'আপনার পরীক্ষা লোড হচ্ছে…',
+  'exam.attempt.error': 'আপনার পরীক্ষা লোড করা যায়নি। অনুগ্রহ করে সহায়তার সাথে যোগাযোগ করুন।',
+  'exam.attempt.questionsUnavailableBanner':
+    'আমরা এই মুহূর্তে আপনার কিছু প্রশ্নের বিষয়বস্তু লোড করতে পারিনি। আপনার টাইমার এবং পূর্বে সংরক্ষিত উত্তর প্রভাবিত হয়নি — যদি এটি শীঘ্রই ঠিক না হয় তবে সহায়তার সাথে যোগাযোগ করুন।',
+  'exam.attempt.timerLabel': 'অবশিষ্ট সময়',
+  'exam.attempt.save.saving': 'সংরক্ষণ হচ্ছে…',
+  'exam.attempt.save.retrying': 'আপনার শেষ উত্তরটি সংরক্ষণ হচ্ছে…',
+  'exam.attempt.save.justNow': 'এইমাত্র সংরক্ষিত হয়েছে',
+  'exam.attempt.save.secondsAgo': '{{seconds}} সেকেন্ড আগে সংরক্ষিত হয়েছে',
+  'exam.attempt.answeredSummary':
+    '{{answered}}টি উত্তর দেওয়া হয়েছে, {{unanswered}}টি বাকি, {{flagged}}টি পর্যালোচনার জন্য চিহ্নিত',
+  'exam.attempt.navigatorLabel': 'প্রশ্ন নেভিগেটর',
+  'exam.attempt.questionButtonLabel': 'প্রশ্ন {{number}}, {{status}}',
+  'exam.attempt.status.answered': 'উত্তর দেওয়া হয়েছে',
+  'exam.attempt.status.unanswered': 'উত্তর দেওয়া হয়নি',
+  'exam.attempt.flaggedBadge': 'চিহ্নিত',
+  'exam.attempt.progress': 'প্রশ্ন {{current}} এর মধ্যে {{total}}',
+  'exam.attempt.contentUnavailable':
+    'এই প্রশ্নের বিষয়বস্তু লোড করা যায়নি। আপনার অন্যান্য প্রশ্নের অগ্রগতি এবং টাইমার প্রভাবিত হয়নি।',
+  'exam.attempt.optionsLegend': 'একটি উত্তর নির্বাচন করুন',
+  'exam.attempt.subjectiveLabel': 'আপনার উত্তর',
+  'exam.attempt.subjectivePlaceholder': 'এখানে আপনার উত্তর লিখুন…',
+  'exam.attempt.flag': 'পর্যালোচনার জন্য চিহ্নিত করুন',
+  'exam.attempt.unflag': 'চিহ্ন সরান',
+  'exam.attempt.previous': 'পূর্ববর্তী',
+  'exam.attempt.next': 'পরবর্তী',
+  'exam.attempt.submitButton': 'পরীক্ষা জমা দিন',
+  'exam.attempt.waitingForSaves': 'আপনার শেষ উত্তরটি সংরক্ষণ হচ্ছে…',
+  'exam.attempt.submitting': 'আপনার পরীক্ষা জমা দেওয়া হচ্ছে…',
+  'exam.attempt.retryingSubmit': 'জমা দেওয়া চলছে — অনুগ্রহ করে এই পাতায় থাকুন…',
+  'exam.attempt.offlineMessage':
+    'আপনি অফলাইনে আছেন। আপনার উত্তরগুলো সংরক্ষিত আছে এবং অনলাইনে ফিরলেই স্বয়ংক্রিয়ভাবে সংরক্ষিত হবে।',
+  'exam.attempt.confirmSubmit.title': 'আপনার পরীক্ষা জমা দেবেন?',
+  'exam.attempt.confirmSubmit.body':
+    'আপনি {{total}}টির মধ্যে {{answered}}টি প্রশ্নের উত্তর দিয়েছেন। একবার জমা দিলে, আপনার পরীক্ষা চূড়ান্ত হয়ে যাবে এবং পরিবর্তন করা যাবে না।',
+  'exam.attempt.confirmSubmit.unansweredWarning':
+    'আপনার এখনও {{unanswered}}টি প্রশ্নের উত্তর বাকি আছে। জমা দেওয়ার আগে আপনি ফিরে গিয়ে সেগুলোর উত্তর দিতে পারেন।',
+  'exam.attempt.confirmSubmit.acknowledge':
+    'আমি বুঝেছি এটি চূড়ান্ত এবং পরে আমি আমার উত্তর পরিবর্তন করতে পারব না।',
+  'exam.attempt.confirmSubmit.cancel': 'ফিরে যান',
+  'exam.attempt.confirmSubmit.confirm': 'হ্যাঁ, আমার পরীক্ষা জমা দিন',
+  'exam.attempt.sessionConflict.title': 'এই পরীক্ষাটি ইতিমধ্যে অন্য জায়গায় খোলা আছে',
+  'exam.attempt.sessionConflict.body':
+    'এই ডিভাইসের অন্য একটি ট্যাব বা উইন্ডোতে এই পরীক্ষার প্রচেষ্টা ইতিমধ্যে চলছে। উত্তর হারানো বা দ্বন্দ্ব এড়াতে, অনুগ্রহ করে সেখানে চালিয়ে যান এবং এই ট্যাবটি বন্ধ করুন।',
+  'exam.attempt.sessionConflict.goToDashboard': 'ড্যাশবোর্ডে যান',
+  'exam.attempt.submitted.title': 'আপনার পরীক্ষা জমা দেওয়া হয়েছে',
+  'exam.attempt.submitted.body':
+    'আপনার উত্তর গ্রহণ করা হয়েছে এবং আপনার প্রচেষ্টা এখন লক করা হয়েছে। ফলাফল প্রকাশিত হলে আপনাকে জানানো হবে।',
+  'exam.attempt.submitted.goToDashboard': 'ড্যাশবোর্ডে ফিরে যান',
 };

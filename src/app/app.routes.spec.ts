@@ -50,6 +50,20 @@ describe('app.routes (AWEB-6 routing shell)', () => {
     expect(location.path()).toBe('/app/result');
   });
 
+  it('redirects an unauthenticated applicant away from the exam attempt screen to login', async () => {
+    await router.navigateByUrl('/app/exam/attempt/attempt-1');
+    expect(location.path()).toContain('/app/login');
+  });
+
+  it('allows an authenticated applicant into the exam pretest and attempt screens (AWEB-21/22)', async () => {
+    tokenStorage.setTokens(tokenPair);
+    await router.navigateByUrl('/app/exam/pretest/app-1');
+    expect(location.path()).toBe('/app/exam/pretest/app-1');
+
+    await router.navigateByUrl('/app/exam/attempt/attempt-1');
+    expect(location.path()).toBe('/app/exam/attempt/attempt-1');
+  });
+
   it('blocks a logged-in non-officer from the officer console', async () => {
     tokenStorage.setTokens(tokenPair);
     TestBed.inject(CurrentUserService); // ensure DI wiring resolves before navigation

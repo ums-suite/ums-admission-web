@@ -100,7 +100,24 @@ export const routes: Routes = [
               ),
           },
           { path: 'admit-card', loadComponent: placeholder, data: { label: 'Admit card' } },
-          { path: 'exam', loadComponent: placeholder, data: { label: 'Admission test' } },
+          {
+            path: 'exam',
+            children: [
+              {
+                path: 'pretest/:applicationId',
+                loadComponent: () =>
+                  import('./features/exam/pretest.component').then((m) => m.PretestComponent),
+              },
+              {
+                path: 'attempt/:id',
+                loadComponent: () =>
+                  import('./features/exam/exam-attempt.component').then(
+                    (m) => m.ExamAttemptComponent,
+                  ),
+              },
+              { path: '', loadComponent: placeholder, data: { label: 'Admission test' } },
+            ],
+          },
           {
             path: 'post-result',
             loadComponent: placeholder,
