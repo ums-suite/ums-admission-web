@@ -47,8 +47,10 @@ export const routes: Routes = [
       {
         path: 'register',
         canActivate: [guestGuard],
-        loadComponent: placeholder,
-        data: { label: 'Registration' },
+        loadComponent: () =>
+          import('./features/registration/registration-flow.component').then(
+            (m) => m.RegistrationFlowComponent,
+          ),
       },
       {
         path: 'result',
