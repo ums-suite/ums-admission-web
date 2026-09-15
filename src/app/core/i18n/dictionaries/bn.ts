@@ -48,4 +48,14 @@ export const BN_TRANSLATIONS: TranslationDictionary = {
   'registration.complete.title': 'আপনার নিবন্ধন সম্পন্ন হয়েছে',
   'registration.complete.body':
     'আপনার আবেদনকারী অ্যাকাউন্ট তৈরি হয়েছে এবং আপনার যোগাযোগের তথ্য যাচাই করা হয়েছে। সাইন ইন করার পরবর্তী ধাপ সম্পর্কে আমরা শীঘ্রই আপনাকে জানাব।',
+
+  'login.title': 'সাইন ইন করুন',
+  'login.subtitle': 'স্বাগতম — আপনার আবেদন চালিয়ে যেতে সাইন ইন করুন।',
+  'login.identifier.label': 'ইমেইল বা ইউজারনেম',
+  'login.password.label': 'পাসওয়ার্ড',
+  'login.submit': 'সাইন ইন',
+  'login.submitting': 'সাইন ইন করা হচ্ছে…',
+  'login.serverError.generic': 'এই তথ্য দিয়ে সাইন ইন করা যায়নি। আবার চেষ্টা করুন।',
+  'validation.identifier.required': 'অনুগ্রহ করে আপনার ইমেইল বা ইউজারনেম লিখুন।',
+  'validation.password.required': 'অনুগ্রহ করে আপনার পাসওয়ার্ড লিখুন।',
 };

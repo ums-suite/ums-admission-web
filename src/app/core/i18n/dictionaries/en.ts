@@ -51,4 +51,14 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
   'registration.complete.title': "You're registered",
   'registration.complete.body':
     "Your applicant account has been created and your contact details are verified. We'll send you a message with next steps for signing in shortly.",
+
+  'login.title': 'Sign in',
+  'login.subtitle': 'Welcome back — sign in to continue your application.',
+  'login.identifier.label': 'Email or username',
+  'login.password.label': 'Password',
+  'login.submit': 'Sign in',
+  'login.submitting': 'Signing in…',
+  'login.serverError.generic': 'We could not sign you in with those details. Please try again.',
+  'validation.identifier.required': 'Please enter your email or username.',
+  'validation.password.required': 'Please enter your password.',
 };

@@ -41,8 +41,8 @@ export const routes: Routes = [
       {
         path: 'login',
         canActivate: [guestGuard],
-        loadComponent: placeholder,
-        data: { label: 'Login' },
+        loadComponent: () =>
+          import('./features/login/login-form.component').then((m) => m.LoginFormComponent),
       },
       {
         path: 'register',
