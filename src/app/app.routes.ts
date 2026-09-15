@@ -173,8 +173,30 @@ export const routes: Routes = [
           {
             path: 'officer',
             canActivate: [officerGuard],
-            loadComponent: placeholder,
-            data: { label: 'Officer console' },
+            children: [
+              {
+                path: 'campaigns',
+                loadComponent: () =>
+                  import('./features/officer/campaign-config.component').then(
+                    (m) => m.CampaignConfigComponent,
+                  ),
+              },
+              {
+                path: 'tests/:campaignId',
+                loadComponent: () =>
+                  import('./features/officer/question-bank.component').then(
+                    (m) => m.QuestionBankComponent,
+                  ),
+              },
+              {
+                path: 'merit-lists/:campaignId',
+                loadComponent: () =>
+                  import('./features/officer/merit-list.component').then(
+                    (m) => m.MeritListComponent,
+                  ),
+              },
+              { path: '', loadComponent: placeholder, data: { label: 'Officer console' } },
+            ],
           },
         ],
       },

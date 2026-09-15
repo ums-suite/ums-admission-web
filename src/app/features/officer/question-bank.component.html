@@ -1,0 +1,180 @@
+<section class="question-bank">
+  <h1>{{ 'officer.questionBank.title' | translate }}</h1>
+
+  @if (!test()) {
+    <ums-card variant="content" [title]="'officer.questionBank.createTest.title' | translate">
+      <ums-form-field
+        #testNameField="umsFormField"
+        [label]="'officer.questionBank.createTest.name' | translate"
+      >
+        <ums-input
+          [id]="testNameField.controlId()"
+          [value]="testName()"
+          (valueChange)="testName.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #durationField="umsFormField"
+        [label]="'officer.questionBank.createTest.duration' | translate"
+      >
+        <ums-input
+          [id]="durationField.controlId()"
+          type="number"
+          [value]="durationMinutes()"
+          (valueChange)="durationMinutes.set($event)"
+        />
+      </ums-form-field>
+      <ums-button type="button" [loading]="creatingTest()" (click)="createTest()">
+        {{ 'officer.questionBank.createTest.submit' | translate }}
+      </ums-button>
+    </ums-card>
+  }
+
+  @if (test(); as test) {
+    <ums-card
+      variant="content"
+      [title]="test.name"
+      [statLabel]="'officer.questionBank.totalQuestions' | translate"
+      [statValue]="'' + (test.totalQuestionCount + addedQuestionCount())"
+    />
+
+    <ums-card variant="content" [title]="'officer.questionBank.addQuestion.title' | translate">
+      <ums-form-field
+        #categoryField="umsFormField"
+        [label]="'officer.questionBank.addQuestion.category' | translate"
+      >
+        <ums-input
+          [id]="categoryField.controlId()"
+          [value]="questionCategory()"
+          (valueChange)="questionCategory.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #difficultyField="umsFormField"
+        [label]="'officer.questionBank.addQuestion.difficulty' | translate"
+      >
+        <ums-select
+          [id]="difficultyField.controlId()"
+          [options]="difficultyOptions"
+          [value]="questionDifficulty()"
+          (valueChange)="questionDifficulty.set($any($event))"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #textField="umsFormField"
+        [label]="'officer.questionBank.addQuestion.text' | translate"
+      >
+        <ums-input
+          [id]="textField.controlId()"
+          [value]="questionText()"
+          (valueChange)="questionText.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #optionsField="umsFormField"
+        [label]="'officer.questionBank.addQuestion.options' | translate"
+        [hint]="'officer.questionBank.addQuestion.optionsHint' | translate"
+      >
+        <ums-input
+          [id]="optionsField.controlId()"
+          [value]="questionOptionsInput()"
+          (valueChange)="questionOptionsInput.set($event)"
+        />
+      </ums-form-field>
+      <label>
+        <input
+          type="checkbox"
+          [checked]="questionIsSubjective()"
+          (change)="questionIsSubjective.set(!questionIsSubjective())"
+        />
+        {{ 'officer.questionBank.addQuestion.isSubjective' | translate }}
+      </label>
+      <ums-form-field
+        #maxScoreField="umsFormField"
+        [label]="'officer.questionBank.addQuestion.maxScore' | translate"
+      >
+        <ums-input
+          [id]="maxScoreField.controlId()"
+          type="number"
+          [value]="questionMaxScore()"
+          (valueChange)="questionMaxScore.set($event)"
+        />
+      </ums-form-field>
+      <ums-button type="button" [loading]="submittingQuestion()" (click)="addQuestion()">
+        {{ 'officer.questionBank.addQuestion.submit' | translate }}
+      </ums-button>
+    </ums-card>
+
+    <ums-card variant="content" [title]="'officer.questionBank.selectionRule.title' | translate">
+      <ums-form-field
+        #ruleDifficultyField="umsFormField"
+        [label]="'officer.questionBank.selectionRule.difficulty' | translate"
+      >
+        <ums-select
+          [id]="ruleDifficultyField.controlId()"
+          [options]="difficultyOptions"
+          [value]="ruleDifficulty()"
+          (valueChange)="ruleDifficulty.set($any($event))"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #ruleCountField="umsFormField"
+        [label]="'officer.questionBank.selectionRule.count' | translate"
+      >
+        <ums-input
+          [id]="ruleCountField.controlId()"
+          type="number"
+          [value]="ruleCount()"
+          (valueChange)="ruleCount.set($event)"
+        />
+      </ums-form-field>
+      <ums-button type="button" [loading]="submittingRule()" (click)="addSelectionRule()">
+        {{ 'officer.questionBank.selectionRule.submit' | translate }}
+      </ums-button>
+    </ums-card>
+
+    <ums-card
+      variant="content"
+      [title]="'officer.questionBank.slot.title' | translate"
+      [statLabel]="'officer.questionBank.totalSlots' | translate"
+      [statValue]="'' + test.slotCount"
+    >
+      <ums-form-field
+        #slotStartField="umsFormField"
+        [label]="'officer.questionBank.slot.startAt' | translate"
+      >
+        <ums-input
+          [id]="slotStartField.controlId()"
+          [value]="slotStartAt()"
+          placeholder="YYYY-MM-DDTHH:mm:ssZ"
+          (valueChange)="slotStartAt.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #slotEndField="umsFormField"
+        [label]="'officer.questionBank.slot.endAt' | translate"
+      >
+        <ums-input
+          [id]="slotEndField.controlId()"
+          [value]="slotEndAt()"
+          placeholder="YYYY-MM-DDTHH:mm:ssZ"
+          (valueChange)="slotEndAt.set($event)"
+        />
+      </ums-form-field>
+      <ums-form-field
+        #slotCapacityField="umsFormField"
+        [label]="'officer.questionBank.slot.capacity' | translate"
+      >
+        <ums-input
+          [id]="slotCapacityField.controlId()"
+          type="number"
+          [value]="slotCapacity()"
+          (valueChange)="slotCapacity.set($event)"
+        />
+      </ums-form-field>
+      <ums-button type="button" [loading]="submittingSlot()" (click)="addSlot()">
+        {{ 'officer.questionBank.slot.submit' | translate }}
+      </ums-button>
+    </ums-card>
+  }
+</section>

@@ -75,4 +75,11 @@ describe('app.routes (AWEB-6 routing shell)', () => {
     await router.navigateByUrl('/app/officer');
     expect(location.path()).toBe('/app');
   });
+
+  it('blocks a logged-in non-officer from officer sub-routes too (AWEB-32/33/34)', async () => {
+    tokenStorage.setTokens(tokenPair);
+    TestBed.inject(CurrentUserService);
+    await router.navigateByUrl('/app/officer/campaigns');
+    expect(location.path()).toBe('/app');
+  });
 });

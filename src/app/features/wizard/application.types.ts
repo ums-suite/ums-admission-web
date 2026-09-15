@@ -122,6 +122,47 @@ export interface CampaignEligibilityRuleDto {
   readonly requiredBoard?: string;
 }
 
+/**
+ * Officer-facing campaign configuration write shapes (AWEB-32, requirement-spec.md §3.8) --
+ * verified directly against `ums-core` source (`CampaignEndpoints.cs`, `CampaignService.cs`,
+ * `EligibilityRule.cs`). All four gated behind `admission.campaign.manage`.
+ *
+ * **Confirmed gaps, flagged in the PR**: no `GET /campaigns` list endpoint exists (an officer
+ * must already know/remember a campaign's id -- this app's own `CampaignConfigComponent` works
+ * around it the same way `WizardDraftStore` already does for applicants, by remembering a
+ * just-created campaign's id locally), and no `PUT`/`PATCH` update or delete endpoint of any kind
+ * exists for a campaign, its eligibility rules, or its seat quotas -- every one of the four
+ * write endpoints below is additive-only. Every write endpoint's own response shape is
+ * **unconfirmed** (the research pass backing this confirmed the routes/permissions/request bodies
+ * but not what each actually returns) -- assumed to return the updated `CampaignDto`, mirroring
+ * this module's other write endpoints' own established convention (e.g. `setProgramChoices`),
+ * flagged in `officer-campaign.api.ts` as unverified pending confirmation.
+ */
+export interface CreateCampaignRequest {
+  readonly name: string;
+  readonly programIds: readonly string[];
+  readonly applicationWindowStart: string;
+  readonly applicationWindowEnd: string;
+  readonly applicationFeeType: string;
+  readonly confirmationFeeType: string;
+}
+
+export interface EligibilityRuleRequest {
+  readonly programId: string;
+  readonly minimumScore: number;
+  readonly isGpaScale: boolean;
+  readonly requiredBoard?: string;
+}
+
+export interface SeatQuotaRequest {
+  readonly programId: string;
+  readonly quota: number;
+}
+
+export interface RequiredDocumentTypeRequest {
+  readonly documentType: string;
+}
+
 export interface AcademicRecordRequest {
   readonly board: string;
   readonly examName: string;

@@ -1,3 +1,5 @@
+import type { QuestionDifficulty } from '../../core/exam-session/exam-attempt.types';
+
 /**
  * Wire shape for `Admission`'s `AdmissionTest` (AWEB-21) -- verified directly against `ums-core`
  * source (`AdmissionTestDto`, `AdmissionTestEndpoints.cs`).
@@ -25,4 +27,49 @@ export interface AdmissionTestDto {
   readonly durationMinutes: number;
   readonly totalQuestionCount: number;
   readonly slotCount: number;
+}
+
+/**
+ * Officer-facing question-bank / exam-rule write shapes (AWEB-33, requirement-spec.md §3.8) --
+ * verified directly against `ums-core` source (`AdmissionTestEndpoints.cs`,
+ * `AdmissionTestService.cs`). All gated behind `admission.campaign.manage` -- there is no distinct
+ * `admission.questionbank.*` permission string.
+ *
+ * **Confirmed gap, flagged in the PR**: as `AdmissionTestDto`'s own class doc already documents,
+ * there is no list/update/delete endpoint for individual questions, slots, or selection rules --
+ * `AdmissionTestDto` exposes only aggregate counts (`totalQuestionCount`, `slotCount`), discarding
+ * everything else server-side (`AdmissionTestService.ToDto`). This screen is therefore
+ * additive-only and tracks "added this session" locally, exactly like `CampaignConfigComponent`'s
+ * own identical workaround for the sibling campaign-configuration gap.
+ */
+export interface CreateAdmissionTestRequest {
+  readonly campaignId: string;
+  readonly name: string;
+  readonly durationMinutes: number;
+}
+
+/**
+ * `correctOptionIndex` is deliberately optional and never rendered back to any Applicant-facing
+ * type (see `ExamQuestionDto`'s own class doc in `exam-attempt.types.ts` for why an Applicant read
+ * must never carry the answer key) -- this request type is officer-only, write-only.
+ */
+export interface AddQuestionRequest {
+  readonly category: string;
+  readonly difficulty: QuestionDifficulty;
+  readonly text: string;
+  readonly options: readonly string[];
+  readonly correctOptionIndex?: number;
+  readonly isSubjective: boolean;
+  readonly maxScore: number;
+}
+
+export interface SelectionRuleRequest {
+  readonly questionDifficulty: QuestionDifficulty;
+  readonly count: number;
+}
+
+export interface AddTestSlotRequest {
+  readonly startAt: string;
+  readonly endAt: string;
+  readonly capacity: number;
 }
