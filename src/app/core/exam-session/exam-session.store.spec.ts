@@ -35,6 +35,7 @@ function makeAttempt(overrides: Partial<ExamAttemptDto> = {}): ExamAttemptDto {
 describe('ExamSessionStore', () => {
   let store: ExamSessionStore;
   let saveAnswerSpy: jasmine.Spy;
+  let submitAttemptSpy: jasmine.Spy;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -49,7 +50,15 @@ describe('ExamSessionStore', () => {
     store = TestBed.inject(ExamSessionStore);
     const api = TestBed.inject(ExamAttemptApi);
     saveAnswerSpy = spyOn(api, 'saveAnswer');
+    submitAttemptSpy = spyOn(api, 'submitAttempt');
     jasmine.clock().install();
+    // A safe baseline "now" well inside makeAttempt()'s default 09:00-11:00 window, so any test
+    // that doesn't set its own explicit mockDate (most save-retry/flag/connectivity tests, which
+    // care about retry/flag/online behavior, not timer expiry) never accidentally races
+    // AWEB-23's tick-driven auto-submit-on-timeout check against the real wall-clock date the
+    // suite happens to run on. Tests that DO care about a specific instant call their own
+    // `jasmine.clock().mockDate(...)`, which simply overrides this baseline.
+    jasmine.clock().mockDate(new Date('2026-01-01T09:05:00.000Z'));
   });
 
   afterEach(() => {
@@ -264,6 +273,308 @@ describe('ExamSessionStore', () => {
       expect(store.saveState()).toBe('idle');
       store.initialize(makeAttempt(), Date.now());
       expect(store.saveState()).toBe('saved');
+    });
+  });
+
+  describe('flag-for-review (AWEB-22)', () => {
+    it('toggles a question id in and out of flaggedQuestionIds', () => {
+      store.initialize(makeAttempt(), Date.now());
+      expect(store.flaggedQuestionIds().has('q1')).toBeFalse();
+
+      store.toggleFlag('q1');
+      expect(store.flaggedQuestionIds().has('q1')).toBeTrue();
+
+      store.toggleFlag('q1');
+      expect(store.flaggedQuestionIds().has('q1')).toBeFalse();
+    });
+
+    it('tracks multiple flagged questions independently', () => {
+      store.initialize(makeAttempt(), Date.now());
+      store.toggleFlag('q1');
+      store.toggleFlag('q2');
+      expect(store.flaggedQuestionIds()).toEqual(new Set(['q1', 'q2']));
+    });
+  });
+
+  describe('manual submit (AWEB-24)', () => {
+    it('submits immediately when there is no in-flight save', () => {
+      const now = Date.now();
+      submitAttemptSpy.and.returnValue(
+        new Subject(), // never resolves -- just observing the request + phase transition
+      );
+      store.initialize(makeAttempt(), now);
+
+      store.submit('manual');
+
+      expect(submitAttemptSpy).toHaveBeenCalledWith('attempt-1');
+      expect(store.submitPhase()).toBe('submitting');
+    });
+
+    it('transitions to submitted and stops accepting further answers on success', () => {
+      const submitted = makeAttempt({ status: 'Submitted' });
+      const submit$ = new Subject<{ body: ExamAttemptDto; serverNowMs: number }>();
+      submitAttemptSpy.and.returnValue(submit$);
+      store.initialize(makeAttempt(), Date.now());
+
+      store.submit('manual');
+      submit$.next({ body: submitted, serverNowMs: Date.now() });
+      submit$.complete();
+
+      expect(store.submitPhase()).toBe('submitted');
+      expect(store.submittedAttempt()).toEqual(submitted);
+
+      // Domain Invariant #4's exam-side sibling: no further input accepted once locked.
+      saveAnswerSpy.and.returnValue(new Subject());
+      store.selectAnswer('q1', { selectedOptionIndex: 0 });
+      expect(store.answers()['q1']).toBeUndefined();
+    });
+
+    it('is idempotent -- a second submit call while already submitting is a no-op', () => {
+      submitAttemptSpy.and.returnValue(new Subject());
+      store.initialize(makeAttempt(), Date.now());
+
+      store.submit('manual');
+      store.submit('manual');
+
+      expect(submitAttemptSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('waits for an in-flight save (bounded grace window) before submitting', () => {
+      const save$ = new Subject<void>();
+      saveAnswerSpy.and.returnValue(save$);
+      submitAttemptSpy.and.returnValue(new Subject());
+      store.initialize(makeAttempt(), Date.now());
+
+      store.selectAnswer('q1', { selectedOptionIndex: 0 });
+      store.submit('manual');
+
+      // The save is still in flight -- submit must not have fired yet.
+      expect(store.submitPhase()).toBe('waiting-for-saves');
+      expect(submitAttemptSpy).not.toHaveBeenCalled();
+
+      save$.next();
+      save$.complete();
+      jasmine.clock().tick(250); // the grace-window poll interval
+
+      expect(submitAttemptSpy).toHaveBeenCalledWith('attempt-1');
+    });
+
+    it('proceeds once the grace window elapses even if the save never resolves', () => {
+      saveAnswerSpy.and.returnValue(new Subject()); // never resolves
+      submitAttemptSpy.and.returnValue(new Subject());
+      store.initialize(makeAttempt(), Date.now());
+
+      store.selectAnswer('q1', { selectedOptionIndex: 0 });
+      store.submit('manual');
+      expect(submitAttemptSpy).not.toHaveBeenCalled();
+
+      jasmine.clock().tick(4200); // past the grace window
+
+      expect(submitAttemptSpy).toHaveBeenCalledWith('attempt-1');
+    });
+
+    it('retries the submit call indefinitely on failure rather than reporting a fatal error', () => {
+      let call = 0;
+      submitAttemptSpy.and.callFake(() => {
+        call += 1;
+        return call === 1 ? throwError(() => new HttpErrorResponse({ status: 0 })) : new Subject();
+      });
+      store.initialize(makeAttempt(), Date.now());
+
+      store.submit('manual');
+      expect(store.submitPhase()).toBe('retrying');
+
+      jasmine.clock().tick(1000);
+      expect(call).toBe(2);
+    });
+  });
+
+  describe('auto-submit-on-timeout (AWEB-23, Domain Invariant #2)', () => {
+    it('auto-submits the instant the server-authoritative clock reaches zero', () => {
+      const now = Date.parse('2026-01-01T10:59:59.000Z'); // 1s before expiry
+      jasmine.clock().mockDate(new Date(now));
+      submitAttemptSpy.and.returnValue(new Subject());
+
+      store.initialize(makeAttempt(), now);
+      expect(submitAttemptSpy).not.toHaveBeenCalled();
+
+      jasmine.clock().tick(1000); // crosses expiresAt on the next 1s tick
+
+      expect(submitAttemptSpy).toHaveBeenCalledWith('attempt-1');
+    });
+
+    it('auto-submits on the very next tick after resuming an already-expired attempt (crash recovery)', () => {
+      const now = Date.parse('2026-01-01T12:00:00.000Z'); // 1h past the 11:00 expiry
+      jasmine.clock().mockDate(new Date(now));
+      submitAttemptSpy.and.returnValue(new Subject());
+
+      store.initialize(makeAttempt(), now);
+      expect(submitAttemptSpy).not.toHaveBeenCalled();
+
+      jasmine.clock().tick(1000);
+
+      expect(submitAttemptSpy).toHaveBeenCalledWith('attempt-1');
+    });
+
+    it('never fires auto-submit twice even across many ticks past expiry', () => {
+      const now = Date.parse('2026-01-01T10:59:59.000Z');
+      jasmine.clock().mockDate(new Date(now));
+      submitAttemptSpy.and.returnValue(new Subject());
+
+      store.initialize(makeAttempt(), now);
+      jasmine.clock().tick(10000);
+
+      expect(submitAttemptSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not race a manual submit that already completed before expiry', () => {
+      const now = Date.parse('2026-01-01T10:59:59.500Z');
+      jasmine.clock().mockDate(new Date(now));
+      const submitted = makeAttempt({ status: 'Submitted' });
+      const submit$ = new Subject<{ body: ExamAttemptDto; serverNowMs: number }>();
+      submitAttemptSpy.and.returnValue(submit$);
+
+      store.initialize(makeAttempt(), now);
+      store.submit('manual');
+      submit$.next({ body: submitted, serverNowMs: now });
+      submit$.complete();
+
+      jasmine.clock().tick(1000); // would otherwise cross expiresAt
+
+      expect(submitAttemptSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('connectivity (AWEB-25)', () => {
+    it('reflects navigator.onLine and updates on online/offline events', () => {
+      const onLineSpy = spyOnProperty(navigator, 'onLine', 'get');
+      onLineSpy.and.returnValue(true);
+      store.initialize(makeAttempt(), Date.now());
+      expect(store.isOnline()).toBeTrue();
+
+      onLineSpy.and.returnValue(false);
+      window.dispatchEvent(new Event('offline'));
+      expect(store.isOnline()).toBeFalse();
+
+      onLineSpy.and.returnValue(true);
+      window.dispatchEvent(new Event('online'));
+      expect(store.isOnline()).toBeTrue();
+    });
+
+    it('force-retries a backed-off save immediately when an online event arrives', () => {
+      spyOnProperty(navigator, 'onLine', 'get').and.returnValue(true);
+      let call = 0;
+      saveAnswerSpy.and.callFake(() => {
+        call += 1;
+        return call === 1 ? throwError(() => new HttpErrorResponse({ status: 0 })) : new Subject();
+      });
+      store.initialize(makeAttempt(), Date.now());
+
+      store.selectAnswer('q1', { selectedOptionIndex: 0 });
+      expect(call).toBe(1); // first attempt, synchronous failure, now backed off
+
+      window.dispatchEvent(new Event('online'));
+
+      expect(call).toBe(2); // force-retried immediately, without waiting out the 1s backoff
+    });
+  });
+
+  describe('session conflict (AWEB-25, same-device two-tab mitigation)', () => {
+    it('starts with no session conflict', () => {
+      store.initialize(makeAttempt(), Date.now());
+      expect(store.hasSessionConflict()).toBeFalse();
+    });
+
+    it('flips to conflict when an earlier-claiming tab is heard from', () => {
+      store.initialize(makeAttempt(), Date.now());
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const lockChannel = (store as any).lockChannel as BroadcastChannel;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const myClaimedAtMs = (store as any).lockClaimedAtMs as number;
+
+      lockChannel.onmessage?.({
+        data: { tabId: 'earlier-tab', claimedAtMs: myClaimedAtMs - 1000 },
+      } as MessageEvent);
+
+      expect(store.hasSessionConflict()).toBeTrue();
+    });
+
+    it('does not flip to conflict, and re-announces, when a later-claiming tab is heard from', () => {
+      store.initialize(makeAttempt(), Date.now());
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const lockChannel = (store as any).lockChannel as BroadcastChannel;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const myClaimedAtMs = (store as any).lockClaimedAtMs as number;
+      const postSpy = spyOn(lockChannel, 'postMessage');
+
+      lockChannel.onmessage?.({
+        data: { tabId: 'later-tab', claimedAtMs: myClaimedAtMs + 1000 },
+      } as MessageEvent);
+
+      expect(store.hasSessionConflict()).toBeFalse();
+      expect(postSpy).toHaveBeenCalled();
+    });
+
+    it('breaks a same-instant claim tie deterministically by tabId, and ignores its own echoed message', () => {
+      store.initialize(makeAttempt(), Date.now());
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const lockChannel = (store as any).lockChannel as BroadcastChannel;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const myTabId = (store as any).tabId as string;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const myClaimedAtMs = (store as any).lockClaimedAtMs as number;
+
+      // Its own message echoed back (same tabId) must be ignored entirely.
+      lockChannel.onmessage?.({
+        data: { tabId: myTabId, claimedAtMs: myClaimedAtMs },
+      } as MessageEvent);
+      expect(store.hasSessionConflict()).toBeFalse();
+
+      // A lexicographically-smaller tabId at the exact same instant wins over us.
+      lockChannel.onmessage?.({
+        data: { tabId: `!${myTabId}`, claimedAtMs: myClaimedAtMs },
+      } as MessageEvent);
+      expect(store.hasSessionConflict()).toBeTrue();
+    });
+
+    it('gracefully no-ops when BroadcastChannel is unsupported', () => {
+      const original = (globalThis as { BroadcastChannel?: unknown }).BroadcastChannel;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (globalThis as any).BroadcastChannel = undefined;
+      try {
+        expect(() => store.initialize(makeAttempt(), Date.now())).not.toThrow();
+        expect(store.hasSessionConflict()).toBeFalse();
+      } finally {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (globalThis as any).BroadcastChannel = original;
+      }
+    });
+  });
+
+  describe('resuming an already-submitted attempt (crash-recovery)', () => {
+    it('renders the submitted state immediately and never re-opens for further answers', () => {
+      const submitted = makeAttempt({ status: 'Submitted' });
+      store.initialize(submitted, Date.now());
+
+      expect(store.submitPhase()).toBe('submitted');
+      expect(store.submittedAttempt()).toEqual(submitted);
+
+      saveAnswerSpy.and.returnValue(new Subject());
+      store.selectAnswer('q1', { selectedOptionIndex: 0 });
+      expect(store.answers()['q1']).toBeUndefined();
+    });
+  });
+
+  describe('guard clauses', () => {
+    it('submit() is a no-op before initialize() has ever set an attemptId', () => {
+      store.submit('manual');
+      expect(submitAttemptSpy).not.toHaveBeenCalled();
+    });
+
+    it('selectAnswer() called before initialize() never reaches the save pipeline', () => {
+      store.selectAnswer('q1', { selectedOptionIndex: 0 });
+      expect(saveAnswerSpy).not.toHaveBeenCalled();
+      expect(store.answers()['q1']).toEqual({ selectedOptionIndex: 0 });
     });
   });
 });
