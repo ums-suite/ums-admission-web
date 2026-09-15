@@ -136,10 +136,31 @@ export const routes: Routes = [
             path: 'post-result',
             children: [
               {
+                path: 'offer/:applicationId/confirming',
+                loadComponent: () =>
+                  import('./features/post-result/offer-acceptance-confirming.component').then(
+                    (m) => m.OfferAcceptanceConfirmingComponent,
+                  ),
+              },
+              {
+                path: 'offer/:applicationId',
+                loadComponent: () =>
+                  import('./features/post-result/offer-acceptance.component').then(
+                    (m) => m.OfferAcceptanceComponent,
+                  ),
+              },
+              {
                 path: 'documents/:applicationId',
                 loadComponent: () =>
                   import('./features/post-result/document-verification.component').then(
                     (m) => m.DocumentVerificationComponent,
+                  ),
+              },
+              {
+                path: 'enrollment/:applicationId',
+                loadComponent: () =>
+                  import('./features/post-result/enrollment-handoff.component').then(
+                    (m) => m.EnrollmentHandoffComponent,
                   ),
               },
               {

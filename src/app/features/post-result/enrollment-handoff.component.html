@@ -1,0 +1,24 @@
+@switch (state()) {
+  @case ('loading') {
+    <p>{{ 'postResult.enrollment.loading' | translate }}</p>
+  }
+  @case ('error') {
+    <p role="alert">{{ 'postResult.enrollment.error' | translate }}</p>
+  }
+  @case ('not-yet-confirmed') {
+    <section class="enrollment-handoff enrollment-handoff--pending">
+      <h1>{{ 'postResult.enrollment.pending.title' | translate }}</h1>
+      <p>{{ 'postResult.enrollment.pending.body' | translate }}</p>
+      <ums-button type="button" (click)="goToOfferAcceptance()">
+        {{ 'postResult.enrollment.pending.action' | translate }}
+      </ums-button>
+    </section>
+  }
+  @case ('handed-off') {
+    <section class="enrollment-handoff enrollment-handoff--complete" role="status">
+      <h1>{{ 'postResult.enrollment.complete.title' | translate }}</h1>
+      <p>{{ 'postResult.enrollment.complete.body' | translate }}</p>
+      <p>{{ 'postResult.enrollment.complete.credentials' | translate }}</p>
+    </section>
+  }
+}

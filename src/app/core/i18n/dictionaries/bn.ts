@@ -307,4 +307,32 @@ export const BN_TRANSLATIONS: TranslationDictionary = {
     'আপনার জমাকৃত পছন্দক্রম ও মেধাক্রমের ভিত্তিতে এবার আপনি ভর্তির জন্য নির্বাচিত হননি।',
   'result.reveal.notAdmitted.nextSteps':
     'আবেদনের জন্য ধন্যবাদ। ভবিষ্যতের ভর্তি চক্র সম্পর্কে তথ্যের জন্য নজর রাখুন।',
+
+  'postResult.offer.loading': 'আপনার অফার লোড হচ্ছে…',
+  'postResult.offer.error': 'আপনার অফার লোড করা যায়নি। পরে আবার চেষ্টা করুন।',
+  'postResult.offer.title': 'আপনার আসন নিশ্চিত করুন',
+  'postResult.offer.deadlineNotice':
+    'অনুগ্রহ করে যত দ্রুত সম্ভব আপনার আসন নিশ্চিত করুন এবং ভর্তি ফি পরিশোধ করুন — সময়মতো নিশ্চিত না করলে আপনার অফার বাতিল হতে পারে।',
+  'postResult.offer.amountTitle': 'প্রদেয় ভর্তি ফি',
+  'postResult.offer.chooseMethod': 'একটি পেমেন্ট পদ্ধতি নির্বাচন করুন',
+  'postResult.offer.submit': 'পরিশোধ করে আসন নিশ্চিত করুন',
+  'postResult.offer.serverError': 'আপনার পেমেন্ট শুরু করা যায়নি। আবার চেষ্টা করুন।',
+  'postResult.offer.confirmed.title': 'আপনার আসন নিশ্চিত হয়েছে',
+  'postResult.offer.confirmed.body': 'আপনার ভর্তি ফি পেমেন্ট নিশ্চিত করা হয়েছে।',
+  'postResult.offer.confirmed.action': 'এগিয়ে যান',
+  'postResult.offer.confirming.success.title': 'পেমেন্ট নিশ্চিত হয়েছে',
+  'postResult.offer.confirming.success.body':
+    'আপনার ভর্তি ফি পেমেন্ট নিশ্চিত করা হয়েছে এবং আপনার আসন এখন সুরক্ষিত।',
+
+  'postResult.enrollment.loading': 'আপনার ভর্তির অবস্থা পরীক্ষা করা হচ্ছে…',
+  'postResult.enrollment.error': 'আপনার ভর্তির অবস্থা লোড করা যায়নি। পরে আবার চেষ্টা করুন।',
+  'postResult.enrollment.pending.title': 'ভর্তি এখনও সম্পন্ন হয়নি',
+  'postResult.enrollment.pending.body':
+    'আপনি এখনও আপনার আসন নিশ্চিত করেননি এবং ভর্তি ফি পরিশোধ করেননি।',
+  'postResult.enrollment.pending.action': 'আপনার আসন নিশ্চিত করুন',
+  'postResult.enrollment.complete.title': 'আপনি ভর্তি হয়েছেন!',
+  'postResult.enrollment.complete.body':
+    'আপনার আসন নিশ্চিত হয়েছে এবং আপনার শিক্ষার্থী রেকর্ড তৈরি হয়েছে। আপনার স্টুডেন্ট পোর্টাল অ্যাকাউন্ট প্রস্তুত করা হচ্ছে।',
+  'postResult.enrollment.complete.credentials':
+    'আপনি আলাদাভাবে আপনার স্টুডেন্ট পোর্টালের লগইন তথ্য পাবেন। এখান থেকে, আপনার শিক্ষার্থী যাত্রা স্টুডেন্ট পোর্টালে চলতে থাকবে।',
 };

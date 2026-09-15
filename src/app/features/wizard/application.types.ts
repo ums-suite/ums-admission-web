@@ -51,6 +51,33 @@ export interface ApplicationDto {
   readonly admitCardDocumentId?: string;
 }
 
+/**
+ * `POST /api/v1/admission/applications/{id}/confirm` (AWEB-29) -- verified directly against
+ * `ums-core` source (`ApplicationEndpoints.cs`, `ApplicationService.ConfirmAsync`): own-Application
+ * only, requires `Application.Status == Locked`. Lazily creates the confirmation-fee `Invoice` on
+ * first call (`confirmationFeeInvoiceId` is populated from that point on, mirroring
+ * `applicationFeeInvoiceId`'s own already-established shape) -- idempotent by construction
+ * (`OriginatingApplicationId` keys the `Student` record creation this same call eventually
+ * triggers), so calling it again after paying is always safe, never a double-charge or duplicate
+ * `Student` record.
+ *
+ * **Confirmed gap**: there is no deadline field anywhere on this response or on `ApplicationDto`
+ * -- requirement-spec.md §3.7's "deadline prominently and persistently displayed" therefore has no
+ * backend data source today, exactly the same class of gap already documented for
+ * `AdmissionTestDto`'s missing test-slot start time (`admission-test.types.ts`). Flagged in the PR
+ * rather than inventing a fake date; AWEB-29's screen instead shows a persistent, prominent
+ * (but date-free) urgency notice.
+ *
+ * **Confirmed gap**: the created `Student` record's id/summary is never surfaced back through this
+ * response (`ApplicationService.ConfirmAsync` discards `IStudentRecordProvisioner.CreateAsync`'s
+ * result entirely) -- see AWEB-31's enrollment-handoff screen for how this is worked around.
+ */
+export interface ConfirmationAttemptResult {
+  readonly application: ApplicationDto;
+  readonly confirmationFeeInvoiceId?: string;
+  readonly confirmed: boolean;
+}
+
 export interface CreateApplicationRequest {
   readonly campaignId: string;
 }

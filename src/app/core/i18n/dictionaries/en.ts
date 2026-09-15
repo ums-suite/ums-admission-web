@@ -309,4 +309,33 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
     'You have not been admitted this time, based on your submitted preference order and merit position.',
   'result.reveal.notAdmitted.nextSteps':
     'Thank you for applying. Please watch for information on future admission cycles.',
+
+  'postResult.offer.loading': 'Loading your offer…',
+  'postResult.offer.error': 'We could not load your offer. Please try again later.',
+  'postResult.offer.title': 'Confirm your seat',
+  'postResult.offer.deadlineNotice':
+    'Please confirm your seat and pay the admission fee as soon as possible -- your offer may be withdrawn if not confirmed in time.',
+  'postResult.offer.amountTitle': 'Admission fee due',
+  'postResult.offer.chooseMethod': 'Choose a payment method',
+  'postResult.offer.submit': 'Pay and confirm my seat',
+  'postResult.offer.serverError': 'We could not start your payment. Please try again.',
+  'postResult.offer.confirmed.title': 'Your seat is confirmed',
+  'postResult.offer.confirmed.body': 'Your admission fee payment has been confirmed.',
+  'postResult.offer.confirmed.action': 'Continue',
+  'postResult.offer.confirming.success.title': 'Payment confirmed',
+  'postResult.offer.confirming.success.body':
+    'Your admission fee payment has been confirmed and your seat is now secured.',
+
+  'postResult.enrollment.loading': 'Checking your enrollment status…',
+  'postResult.enrollment.error':
+    'We could not load your enrollment status. Please try again later.',
+  'postResult.enrollment.pending.title': 'Enrollment not yet complete',
+  'postResult.enrollment.pending.body':
+    'You have not yet confirmed your seat and paid the admission fee.',
+  'postResult.enrollment.pending.action': 'Confirm your seat',
+  'postResult.enrollment.complete.title': "You're enrolled!",
+  'postResult.enrollment.complete.body':
+    'Your seat is confirmed and your student record has been created. Your student portal account is being set up.',
+  'postResult.enrollment.complete.credentials':
+    "You'll receive your student portal login details separately. From here on, your student journey continues on the student portal.",
 };

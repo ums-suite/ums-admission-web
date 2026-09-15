@@ -31,6 +31,31 @@ export class PaymentApi extends ProvisionalModuleApiBase {
     );
   }
 
+  /**
+   * `POST /api/v1/admission/applications/{id}/confirmation-payment` (AWEB-29) -- the second
+   * `Finance` invoice/payment cycle §3.7 calls for, same idempotency rules as
+   * {@link initiateApplicationFeePayment} above. **Unverified, assumed sibling route**: the
+   * research pass backing this app's `POST /applications/{id}/confirm` route (see
+   * `application.types.ts`'s `ConfirmationAttemptResult` class doc) confirmed that endpoint lazily
+   * creates the confirmation-fee invoice, but found no confirmed endpoint for actually *paying*
+   * it -- this mirrors `initiateApplicationFeePayment`'s own already-established route shape as
+   * the most plausible sibling, flagged in the PR as unverified against `ApplicationEndpoints.cs`
+   * pending confirmation.
+   */
+  initiateConfirmationFeePayment(
+    applicationId: string,
+    paymentMethod: PaymentMethod,
+    idempotencyKey: string,
+  ): Observable<InitiatePaymentResult> {
+    return this.normalizeErrors(
+      this.http.post<InitiatePaymentResult>(
+        this.apiUrl(`admission/applications/${applicationId}/confirmation-payment`),
+        { paymentMethod },
+        { headers: { [IDEMPOTENCY_KEY_HEADER]: idempotencyKey } },
+      ),
+    );
+  }
+
   /** `GET /api/v1/finance/payments/{id}` -- the only status-check path available (see class doc's confirmed gap: no query-by-invoice endpoint exists). */
   getPaymentStatus(paymentId: string): Observable<PaymentDto> {
     return this.normalizeErrors(

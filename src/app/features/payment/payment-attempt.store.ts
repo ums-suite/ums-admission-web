@@ -106,6 +106,49 @@ export class PaymentAttemptStore {
       });
   }
 
+  /**
+   * AWEB-29's seat-confirmation payment screen -- identical idempotent-submission shape to
+   * {@link initiatePayment} (same submit-disable-on-click guard, same fresh-`IdempotencyKey`-per-
+   * attempt rule, Domain Invariant #3), only the underlying `PaymentApi` call and stored-payment-id
+   * namespace differ, since a confirmation-fee attempt and an application-fee attempt for the same
+   * `applicationId` must never collide in `localStorage` if both invoice ids happened to coincide
+   * (they never will in practice -- `Finance` issues fresh Guids per invoice -- but keying by
+   * `invoiceId` already used above already guarantees this without extra work here).
+   */
+  initiateConfirmationPayment(
+    applicationId: string,
+    invoiceId: string,
+    paymentMethod: PaymentMethod,
+    onRedirect: (redirectUrl: string) => void,
+    onError?: (error: UmsApiError) => void,
+  ): void {
+    if (this.submittingInternal()) {
+      return;
+    }
+
+    this.submittingInternal.set(true);
+    this.errorInternal.set(null);
+    const idempotencyKey = generateIdempotencyKey();
+
+    this.paymentApi
+      .initiateConfirmationFeePayment(applicationId, paymentMethod, idempotencyKey)
+      .subscribe({
+        next: ({ payment, redirectUrl }) => {
+          this.submittingInternal.set(false);
+          this.writeStoredPaymentId(invoiceId, payment.id);
+          this.pendingPaymentInternal.set(payment);
+          if (redirectUrl) {
+            onRedirect(redirectUrl);
+          }
+        },
+        error: (error: UmsApiError) => {
+          this.submittingInternal.set(false);
+          this.errorInternal.set(error.message || null);
+          onError?.(error);
+        },
+      });
+  }
+
   /** AWEB-19's confirmation screen polls this directly for a known payment id. */
   refreshStatus(paymentId: string, onUpdate: (payment: PaymentDto) => void): void {
     this.paymentApi.getPaymentStatus(paymentId).subscribe({

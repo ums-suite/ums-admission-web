@@ -5,6 +5,7 @@ import type {
   AcademicRecordRequest,
   ApplicationDto,
   CampaignDto,
+  ConfirmationAttemptResult,
   ProgramChoiceRequest,
   UploadDocumentRequest,
 } from './application.types';
@@ -75,6 +76,16 @@ export class ApplicationApi extends ProvisionalModuleApiBase {
       this.http
         .post<unknown>(this.apiUrl(`admission/applicants/${applicantId}/academic-records`), request)
         .pipe(map(() => undefined)),
+    );
+  }
+
+  /** `POST /api/v1/admission/applications/{id}/confirm` (AWEB-29) -- see `ConfirmationAttemptResult`'s class doc. Safe to call more than once (idempotent server-side). */
+  confirmApplication(applicationId: string): Observable<ConfirmationAttemptResult> {
+    return this.normalizeErrors(
+      this.http.post<ConfirmationAttemptResult>(
+        this.apiUrl(`admission/applications/${applicationId}/confirm`),
+        {},
+      ),
     );
   }
 }
