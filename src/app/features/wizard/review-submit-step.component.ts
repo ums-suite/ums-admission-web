@@ -41,7 +41,10 @@ export class ReviewSubmitStepComponent {
     this.confirmDialogOpen.set(false);
     this.submitting.set(true);
     this.store.submit(
-      () => void this.router.navigateByUrl('/app/payment'),
+      () => {
+        const applicationId = this.store.application()?.id;
+        void this.router.navigateByUrl(`/app/payment/${applicationId}`);
+      },
       (error: UmsApiError) => {
         this.submitting.set(false);
         this.errorMessage.set(error.message || this.translation.t('wizard.review.serverError'));

@@ -1,0 +1,45 @@
+@if (loading()) {
+  <p>{{ 'payment.method.loading' | translate }}</p>
+} @else if (application()?.isApplicationFeePaid) {
+  <p role="status">{{ 'payment.method.alreadyPaid' | translate }}</p>
+} @else if (store.blocksNewAttempt()) {
+  <p role="status">{{ 'payment.method.attemptInProgress' | translate }}</p>
+} @else {
+  <section class="payment-method-selection">
+    <h1>{{ 'payment.method.title' | translate }}</h1>
+
+    @if (invoice(); as inv) {
+      <ums-card
+        variant="stat"
+        [title]="'payment.method.amountTitle' | translate"
+        [statLabel]="inv.feeType"
+        [statValue]="inv.totalAmount + ' ' + inv.currency"
+      />
+    }
+
+    <div class="payment-method-selection__options">
+      @for (method of methods; track method) {
+        <ums-button
+          type="button"
+          [variant]="selectedMethod() === method ? 'primary' : 'secondary'"
+          (click)="selectMethod(method)"
+        >
+          {{ method }}
+        </ums-button>
+      }
+    </div>
+
+    @if (errorMessage()) {
+      <p class="payment-method-selection__error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <ums-button
+      type="button"
+      [loading]="store.submitting()"
+      [disabled]="store.submitting() || !selectedMethod()"
+      (click)="onSubmit()"
+    >
+      {{ (store.submitting() ? 'payment.method.submitting' : 'payment.method.submit') | translate }}
+    </ums-button>
+  </section>
+}

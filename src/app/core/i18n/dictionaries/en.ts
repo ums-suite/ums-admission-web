@@ -144,4 +144,29 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
   'wizard.review.confirmSubmit': 'Yes, submit and lock',
   'wizard.review.confirmCancel': 'Go back and review again',
   'wizard.review.serverError': 'We could not submit your application. Please try again.',
+
+  'payment.method.loading': 'Loading your payment details…',
+  'payment.method.alreadyPaid': 'Your application fee has already been paid.',
+  'payment.method.attemptInProgress':
+    'A payment for this application is already being confirmed. Please wait -- we will let you know the moment it is done.',
+  'payment.method.title': 'Pay your application fee',
+  'payment.method.amountTitle': 'Amount due',
+  'payment.method.submit': 'Pay now',
+  'payment.method.submitting': 'Starting payment…',
+  'payment.method.serverError': 'We could not start your payment. Please try again.',
+
+  'payment.confirmation.waiting.title': 'Confirming your payment',
+  'payment.confirmation.waiting.body':
+    'Please do not close this window. We are waiting for your payment provider to confirm your payment -- this usually takes just a few moments.',
+  'payment.confirmation.success.title': 'Payment confirmed',
+  'payment.confirmation.success.body': 'Your application fee payment has been confirmed.',
+  'payment.confirmation.success.action': 'Continue',
+  'payment.confirmation.failed.title': 'Payment was not successful',
+  'payment.confirmation.failed.body':
+    'Your payment could not be completed. No amount was charged for this attempt. You can try again with the same or a different payment method.',
+  'payment.confirmation.failed.action': 'Try again',
+  'payment.confirmation.notFound.title': 'We could not find that payment attempt',
+  'payment.confirmation.notFound.body':
+    'This can happen if you returned to this page a different way than expected. Your money is safe -- let us take you back to start or resume your payment.',
+  'payment.confirmation.notFound.action': 'Go to payment',
 };

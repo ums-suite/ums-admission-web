@@ -77,6 +77,20 @@ export const routes: Routes = [
               ),
           },
           { path: 'wizard', loadComponent: placeholder, data: { label: 'Application wizard' } },
+          {
+            path: 'payment/:applicationId/confirming',
+            loadComponent: () =>
+              import('./features/payment/payment-confirmation.component').then(
+                (m) => m.PaymentConfirmationComponent,
+              ),
+          },
+          {
+            path: 'payment/:applicationId',
+            loadComponent: () =>
+              import('./features/payment/payment-method-selection.component').then(
+                (m) => m.PaymentMethodSelectionComponent,
+              ),
+          },
           { path: 'payment', loadComponent: placeholder, data: { label: 'Fee payment' } },
           { path: 'admit-card', loadComponent: placeholder, data: { label: 'Admit card' } },
           { path: 'exam', loadComponent: placeholder, data: { label: 'Admission test' } },

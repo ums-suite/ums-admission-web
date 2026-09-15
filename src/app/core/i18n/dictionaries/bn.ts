@@ -144,4 +144,29 @@ export const BN_TRANSLATIONS: TranslationDictionary = {
   'wizard.review.confirmSubmit': 'হ্যাঁ, জমা দিয়ে লক করুন',
   'wizard.review.confirmCancel': 'ফিরে গিয়ে আবার পর্যালোচনা করুন',
   'wizard.review.serverError': 'আপনার আবেদন জমা দেওয়া যায়নি। আবার চেষ্টা করুন।',
+
+  'payment.method.loading': 'আপনার পেমেন্টের তথ্য লোড হচ্ছে…',
+  'payment.method.alreadyPaid': 'আপনার আবেদন ফি ইতিমধ্যে পরিশোধ করা হয়েছে।',
+  'payment.method.attemptInProgress':
+    'এই আবেদনের একটি পেমেন্ট ইতিমধ্যে নিশ্চিত করা হচ্ছে। অনুগ্রহ করে অপেক্ষা করুন — সম্পন্ন হওয়ার সাথে সাথে আমরা আপনাকে জানাব।',
+  'payment.method.title': 'আপনার আবেদন ফি পরিশোধ করুন',
+  'payment.method.amountTitle': 'পরিশোধযোগ্য পরিমাণ',
+  'payment.method.submit': 'এখনই পরিশোধ করুন',
+  'payment.method.submitting': 'পেমেন্ট শুরু হচ্ছে…',
+  'payment.method.serverError': 'আপনার পেমেন্ট শুরু করা যায়নি। আবার চেষ্টা করুন।',
+
+  'payment.confirmation.waiting.title': 'আপনার পেমেন্ট নিশ্চিত করা হচ্ছে',
+  'payment.confirmation.waiting.body':
+    'অনুগ্রহ করে এই উইন্ডোটি বন্ধ করবেন না। আমরা আপনার পেমেন্ট প্রদানকারীর নিশ্চিতকরণের জন্য অপেক্ষা করছি — এটি সাধারণত কয়েক মুহূর্ত সময় নেয়।',
+  'payment.confirmation.success.title': 'পেমেন্ট নিশ্চিত হয়েছে',
+  'payment.confirmation.success.body': 'আপনার আবেদন ফি পেমেন্ট নিশ্চিত করা হয়েছে।',
+  'payment.confirmation.success.action': 'এগিয়ে যান',
+  'payment.confirmation.failed.title': 'পেমেন্ট সফল হয়নি',
+  'payment.confirmation.failed.body':
+    'আপনার পেমেন্ট সম্পন্ন করা যায়নি। এই চেষ্টার জন্য কোনো অর্থ কাটা হয়নি। আপনি একই বা ভিন্ন পদ্ধতিতে আবার চেষ্টা করতে পারেন।',
+  'payment.confirmation.failed.action': 'আবার চেষ্টা করুন',
+  'payment.confirmation.notFound.title': 'আমরা সেই পেমেন্ট চেষ্টাটি খুঁজে পাইনি',
+  'payment.confirmation.notFound.body':
+    'আপনি অন্য কোনোভাবে এই পাতায় ফিরে এলে এমনটি হতে পারে। আপনার অর্থ নিরাপদ আছে — আসুন আপনাকে পেমেন্টে ফিরিয়ে নিয়ে যাই।',
+  'payment.confirmation.notFound.action': 'পেমেন্টে যান',
 };
