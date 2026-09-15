@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { ProvisionalModuleApiBase } from '../../core/http/provisional-module-api.base';
-import type { ApplicantDto, OtpChannel, RegisterApplicantRequest } from './applicant.types';
+import type {
+  ApplicantDto,
+  OtpChannel,
+  RegisterApplicantRequest,
+  UpdateApplicantProfileRequest,
+} from './applicant.types';
 
 /**
  * Interim client for `Admission`'s Applicant endpoints (AWEB-10) -- see this app's README "Known
@@ -52,6 +57,21 @@ export class ApplicantApi extends ProvisionalModuleApiBase {
   getMyProfile(): Observable<ApplicantDto> {
     return this.normalizeErrors(
       this.http.get<ApplicantDto>(this.apiUrl('admission/applicants/me')),
+    );
+  }
+
+  /**
+   * `PUT /api/v1/admission/applicants/{id}` (AWEB-12) -- **this route does not exist in
+   * `ums-core` today** (confirmed, not a guess -- see `applicant.types.ts`
+   * `UpdateApplicantProfileRequest` doc). Calling this against the real backend will 404 until
+   * `Admission` ships it; kept as the intended shape for a mechanical swap once it does.
+   */
+  updateProfile(
+    applicantId: string,
+    request: UpdateApplicantProfileRequest,
+  ): Observable<ApplicantDto> {
+    return this.normalizeErrors(
+      this.http.put<ApplicantDto>(this.apiUrl(`admission/applicants/${applicantId}`), request),
     );
   }
 }

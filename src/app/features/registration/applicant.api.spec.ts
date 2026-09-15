@@ -66,4 +66,25 @@ describe('ApplicantApi', () => {
     expect(req.request.method).toBe('GET');
     req.flush({ id: 'applicant-1', isEmailVerified: true, isMobileVerified: false });
   });
+
+  it('updates the profile at PUT /api/v1/admission/applicants/{id}', () => {
+    api
+      .updateProfile('applicant-1', {
+        presentAddress: '12 Green Road, Dhaka',
+        guardianName: 'Karim Rahman',
+        guardianRelation: 'Father',
+        guardianContact: '+8801700000000',
+      })
+      .subscribe();
+
+    const req = httpMock.expectOne(`${baseUrl}/api/v1/admission/applicants/applicant-1`);
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual({
+      presentAddress: '12 Green Road, Dhaka',
+      guardianName: 'Karim Rahman',
+      guardianRelation: 'Father',
+      guardianContact: '+8801700000000',
+    });
+    req.flush({ id: 'applicant-1', isEmailVerified: true, isMobileVerified: true });
+  });
 });

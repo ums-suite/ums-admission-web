@@ -62,6 +62,13 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
           { path: '', loadComponent: placeholder, data: { label: 'Dashboard' } },
+          {
+            path: 'profile',
+            loadComponent: () =>
+              import('./features/registration/applicant-profile.component').then(
+                (m) => m.ApplicantProfileComponent,
+              ),
+          },
           { path: 'wizard', loadComponent: placeholder, data: { label: 'Application wizard' } },
           { path: 'payment', loadComponent: placeholder, data: { label: 'Fee payment' } },
           { path: 'admit-card', loadComponent: placeholder, data: { label: 'Admit card' } },

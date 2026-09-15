@@ -1,0 +1,91 @@
+@if (loading()) {
+  <p>{{ 'profile.loading' | translate }}</p>
+} @else {
+  <form class="applicant-profile" (ngSubmit)="onSubmit()">
+    <h1>{{ 'profile.title' | translate }}</h1>
+    <p>{{ 'profile.subtitle' | translate }}</p>
+
+    <ums-form-field
+      #addressField="umsFormField"
+      [label]="'profile.presentAddress.label' | translate"
+      [required]="true"
+      [errors]="errors.presentAddress ? [errors.presentAddress | translate] : []"
+    >
+      <ums-input
+        [id]="addressField.controlId()"
+        [ariaDescribedBy]="addressField.describedBy()"
+        [invalid]="addressField.hasErrors()"
+        [required]="true"
+        [value]="presentAddress()"
+        (valueChange)="presentAddress.set($event)"
+        autocomplete="street-address"
+      />
+    </ums-form-field>
+
+    <h2>{{ 'profile.guardian.heading' | translate }}</h2>
+    <p>{{ 'profile.guardian.hint' | translate }}</p>
+
+    <ums-form-field
+      #guardianNameField="umsFormField"
+      [label]="'profile.guardianName.label' | translate"
+      [errors]="errors.guardianName ? [errors.guardianName | translate] : []"
+    >
+      <ums-input
+        [id]="guardianNameField.controlId()"
+        [ariaDescribedBy]="guardianNameField.describedBy()"
+        [invalid]="guardianNameField.hasErrors()"
+        [value]="guardianName()"
+        (valueChange)="guardianName.set($event)"
+      />
+    </ums-form-field>
+
+    <ums-form-field
+      #guardianRelationField="umsFormField"
+      [label]="'profile.guardianRelation.label' | translate"
+      [errors]="errors.guardianRelation ? [errors.guardianRelation | translate] : []"
+    >
+      <ums-input
+        [id]="guardianRelationField.controlId()"
+        [ariaDescribedBy]="guardianRelationField.describedBy()"
+        [invalid]="guardianRelationField.hasErrors()"
+        [value]="guardianRelation()"
+        (valueChange)="guardianRelation.set($event)"
+      />
+    </ums-form-field>
+
+    <ums-form-field
+      #guardianContactField="umsFormField"
+      [label]="'profile.guardianContact.label' | translate"
+      [errors]="errors.guardianContact ? [errors.guardianContact | translate] : []"
+    >
+      <ums-input
+        type="tel"
+        [id]="guardianContactField.controlId()"
+        [ariaDescribedBy]="guardianContactField.describedBy()"
+        [invalid]="guardianContactField.hasErrors()"
+        [value]="guardianContact()"
+        (valueChange)="guardianContact.set($event)"
+      />
+    </ums-form-field>
+
+    @if (serverErrorMessage()) {
+      <p class="applicant-profile__server-error" role="alert">{{ serverErrorMessage() }}</p>
+    }
+
+    @if (saved()) {
+      <p class="applicant-profile__saved" role="status">{{ 'profile.saved' | translate }}</p>
+    }
+
+    <div class="applicant-profile__actions">
+      <ums-button type="submit" [loading]="submitting()" [disabled]="submitting()">
+        {{ (submitting() ? 'profile.saving' : 'profile.save') | translate }}
+      </ums-button>
+
+      @if (saved()) {
+        <ums-button type="button" variant="secondary" (click)="continueToWizard()">
+          {{ 'profile.continueToWizard' | translate }}
+        </ums-button>
+      }
+    </div>
+  </form>
+}

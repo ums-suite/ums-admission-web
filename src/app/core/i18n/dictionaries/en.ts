@@ -61,4 +61,27 @@ export const EN_TRANSLATIONS: TranslationDictionary = {
   'login.serverError.generic': 'We could not sign you in with those details. Please try again.',
   'validation.identifier.required': 'Please enter your email or username.',
   'validation.password.required': 'Please enter your password.',
+
+  'profile.loading': 'Loading your profile…',
+  'profile.title': 'Complete your profile',
+  'profile.subtitle':
+    'A few more details before you start your application — your present address and, if applicable, your guardian.',
+  'profile.presentAddress.label': 'Present address',
+  'profile.guardian.heading': 'Guardian information',
+  'profile.guardian.hint':
+    "If the campaign you're applying to requires a guardian on file, fill in all three fields below.",
+  'profile.guardianName.label': "Guardian's name",
+  'profile.guardianRelation.label': 'Relationship to you',
+  'profile.guardianContact.label': "Guardian's phone or email",
+  'profile.save': 'Save profile',
+  'profile.saving': 'Saving…',
+  'profile.saved': 'Your profile has been saved.',
+  'profile.continueToWizard': 'Continue to application',
+  'profile.loadError': 'We could not load your profile. Please refresh and try again.',
+  'profile.serverError.generic': 'Something went wrong while saving. Please try again.',
+
+  'validation.presentAddress.required': 'Please enter your present address.',
+  'validation.guardianName.required': "Please enter your guardian's name.",
+  'validation.guardianRelation.required': 'Please enter your relationship to your guardian.',
+  'validation.guardianContact.required': 'Please enter a way to contact your guardian.',
 };

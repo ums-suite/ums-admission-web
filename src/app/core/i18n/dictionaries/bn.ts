@@ -58,4 +58,28 @@ export const BN_TRANSLATIONS: TranslationDictionary = {
   'login.serverError.generic': 'এই তথ্য দিয়ে সাইন ইন করা যায়নি। আবার চেষ্টা করুন।',
   'validation.identifier.required': 'অনুগ্রহ করে আপনার ইমেইল বা ইউজারনেম লিখুন।',
   'validation.password.required': 'অনুগ্রহ করে আপনার পাসওয়ার্ড লিখুন।',
+
+  'profile.loading': 'আপনার প্রোফাইল লোড হচ্ছে…',
+  'profile.title': 'আপনার প্রোফাইল সম্পূর্ণ করুন',
+  'profile.subtitle':
+    'আবেদন শুরু করার আগে আরও কিছু তথ্য — আপনার বর্তমান ঠিকানা এবং প্রযোজ্য ক্ষেত্রে আপনার অভিভাবক।',
+  'profile.presentAddress.label': 'বর্তমান ঠিকানা',
+  'profile.guardian.heading': 'অভিভাবকের তথ্য',
+  'profile.guardian.hint':
+    'আপনার আবেদনকৃত ক্যাম্পেইনে অভিভাবকের তথ্য প্রয়োজন হলে নিচের তিনটি ঘরই পূরণ করুন।',
+  'profile.guardianName.label': 'অভিভাবকের নাম',
+  'profile.guardianRelation.label': 'আপনার সাথে সম্পর্ক',
+  'profile.guardianContact.label': 'অভিভাবকের ফোন বা ইমেইল',
+  'profile.save': 'প্রোফাইল সংরক্ষণ করুন',
+  'profile.saving': 'সংরক্ষণ করা হচ্ছে…',
+  'profile.saved': 'আপনার প্রোফাইল সংরক্ষণ করা হয়েছে।',
+  'profile.continueToWizard': 'আবেদনে এগিয়ে যান',
+  'profile.loadError': 'আপনার প্রোফাইল লোড করা যায়নি। পাতাটি রিফ্রেশ করে আবার চেষ্টা করুন।',
+  'profile.serverError.generic': 'সংরক্ষণের সময় কিছু একটা ভুল হয়েছে। আবার চেষ্টা করুন।',
+
+  'validation.presentAddress.required': 'অনুগ্রহ করে আপনার বর্তমান ঠিকানা লিখুন।',
+  'validation.guardianName.required': 'অনুগ্রহ করে আপনার অভিভাবকের নাম লিখুন।',
+  'validation.guardianRelation.required': 'অনুগ্রহ করে আপনার অভিভাবকের সাথে সম্পর্ক লিখুন।',
+  'validation.guardianContact.required':
+    'অনুগ্রহ করে আপনার অভিভাবকের সাথে যোগাযোগের একটি উপায় লিখুন।',
 };
