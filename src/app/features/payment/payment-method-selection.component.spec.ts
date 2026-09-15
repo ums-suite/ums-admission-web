@@ -64,15 +64,13 @@ describe('PaymentMethodSelectionComponent', () => {
   it('loads the invoice and checks for a pending attempt when the fee is unpaid', () => {
     fixture.detectChanges();
     httpMock.expectOne(`${baseUrl}/api/v1/admission/applications/app-1`).flush(baseApplication());
-    httpMock
-      .expectOne(`${baseUrl}/api/v1/finance/invoices/invoice-1`)
-      .flush({
-        id: 'invoice-1',
-        feeType: 'Application',
-        totalAmount: 500,
-        currency: 'BDT',
-        status: 'Open',
-      });
+    httpMock.expectOne(`${baseUrl}/api/v1/finance/invoices/invoice-1`).flush({
+      id: 'invoice-1',
+      feeType: 'Application',
+      totalAmount: 500,
+      currency: 'BDT',
+      status: 'Open',
+    });
 
     expect(fixture.componentInstance['loading']()).toBeFalse();
     expect(fixture.componentInstance['invoice']()?.totalAmount).toBe(500);
@@ -81,15 +79,13 @@ describe('PaymentMethodSelectionComponent', () => {
   it('initiates payment and hands the redirect URL to navigateToGateway on submit', () => {
     fixture.detectChanges();
     httpMock.expectOne(`${baseUrl}/api/v1/admission/applications/app-1`).flush(baseApplication());
-    httpMock
-      .expectOne(`${baseUrl}/api/v1/finance/invoices/invoice-1`)
-      .flush({
-        id: 'invoice-1',
-        feeType: 'Application',
-        totalAmount: 500,
-        currency: 'BDT',
-        status: 'Open',
-      });
+    httpMock.expectOne(`${baseUrl}/api/v1/finance/invoices/invoice-1`).flush({
+      id: 'invoice-1',
+      feeType: 'Application',
+      totalAmount: 500,
+      currency: 'BDT',
+      status: 'Open',
+    });
 
     const component = fixture.componentInstance;
     const redirectSpy = spyOn(
@@ -110,15 +106,13 @@ describe('PaymentMethodSelectionComponent', () => {
   it('does not submit when no method has been selected', () => {
     fixture.detectChanges();
     httpMock.expectOne(`${baseUrl}/api/v1/admission/applications/app-1`).flush(baseApplication());
-    httpMock
-      .expectOne(`${baseUrl}/api/v1/finance/invoices/invoice-1`)
-      .flush({
-        id: 'invoice-1',
-        feeType: 'Application',
-        totalAmount: 500,
-        currency: 'BDT',
-        status: 'Open',
-      });
+    httpMock.expectOne(`${baseUrl}/api/v1/finance/invoices/invoice-1`).flush({
+      id: 'invoice-1',
+      feeType: 'Application',
+      totalAmount: 500,
+      currency: 'BDT',
+      status: 'Open',
+    });
 
     fixture.componentInstance['onSubmit']();
     httpMock.expectNone(`${baseUrl}/api/v1/admission/applications/app-1/payment`);

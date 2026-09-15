@@ -119,14 +119,12 @@ describe('ResultCheckComponent', () => {
       expect(fixture.componentInstance['effectiveState']()).toBe('not-published');
 
       fixture.componentInstance['checkAgain']();
-      httpMock
-        .expectOne(searchUrl)
-        .flush({
-          applicantId: 'a1',
-          applicationId: 'app1',
-          programId: 'p1',
-          outcome: 'Waitlisted',
-        });
+      httpMock.expectOne(searchUrl).flush({
+        applicantId: 'a1',
+        applicationId: 'app1',
+        programId: 'p1',
+        outcome: 'Waitlisted',
+      });
 
       expect(fixture.componentInstance['effectiveState']()).toBe('published');
     });
